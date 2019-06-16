@@ -1,0 +1,263 @@
+{
+	"pages": [{
+			"path": "pages/order/index",
+			"style": {
+				"navigationBarTitleText": "订单",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/store/index",
+			"style": {
+				"navigationBarTitleText": "店铺"
+			}
+		}
+	],
+	"subPackages": [{
+		"root": "subPackages/waimai",
+		"pages": [{
+				"path": "pages/store/printer",
+				"style": {
+					"navigationBarTitleText": "打印机管理"
+				}
+			},
+			{
+				"path": "pages/order/detail",
+				"style": {
+					"navigationBarTitleText": "订单详情",
+					"enablePullDownRefresh": true
+				}
+			},
+			{
+				"path": "pages/order/rating",
+				"style": {
+					"navigationBarTitleText": "评价"
+				}
+			},
+			{
+				"path": "pages/goods/index",
+				"style": {
+					"navigationBarTitleText": "商品"
+				}
+			},
+			{
+				"path": "pages/goods/category",
+				"style": {
+					"navigationBarTitleText": "分类"
+				}
+			},
+			{
+				"path": "pages/goods/edit",
+				"style": {
+					"navigationBarTitleText": "编辑商品"
+				}
+			},
+			{
+				"path": "pages/goods/goodsSort",
+				"style": {
+					"navigationBarTitleText": "商品排序"
+				}
+			},
+			{
+				"path": "pages/store/cooperateIntro",
+				"style": {
+					"navigationBarTitleText": "合作介绍"
+				}
+			},
+			{
+				"path": "pages/store/cooperate",
+				"style": {
+					"navigationBarTitleText": "合作方案"
+				}
+			},
+
+			{
+				"path": "pages/store/bluetooth",
+				"style": {
+					"navigationBarTitleText": "蓝牙连接"
+				}
+			},
+			{
+				"path": "pages/store/coverArea",
+				"style": {
+					"navigationBarTitleText": "经营区域管理"
+				}
+			},
+			{
+				"path": "pages/me/deposit",
+				"style": {
+					"navigationBarTitleText": "充值"
+				}
+			},
+
+			{
+				"path": "pages/me/account",
+				"style": {
+					"navigationBarTitleText": "账户信息"
+				}
+			},
+			{
+				"path": "pages/me/bank",
+				"style": {
+					"navigationBarTitleText": "银行卡信息"
+				}
+			},
+			{
+				"path": "pages/me/payPassword",
+				"style": {
+					"navigationBarTitleText": "支付密码"
+				}
+			},
+			{
+				"path": "pages/me/payPasswordCheck",
+				"style": {
+					"navigationBarTitleText": "支付密码"
+				}
+			},
+			{
+				"path": "pages/store/info",
+				"style": {
+					"navigationBarTitleText": "基本信息"
+				}
+			},
+			{
+				"path": "pages/store/business",
+				"style": {
+					"navigationBarTitleText": "营业信息"
+				}
+			},
+			{
+				"path": "pages/me/wallet",
+				"style": {
+					"navigationBarTitleText": "商家钱包"
+				}
+			},
+			{
+				"path": "pages/me/withdraw",
+				"style": {
+					"navigationBarTitleText": "提现"
+				}
+			},
+			{
+				"path": "pages/me/withdrawSuccess",
+				"style": {
+					"navigationBarTitleText": "提现申请成功"
+				}
+			},
+			{
+				"path": "pages/me/withdrawInfo",
+				"style": {
+					"navigationBarTitleText": "账户详情"
+				}
+			},
+			{
+				"path": "pages/me/login",
+				"style": {
+					"navigationBarTitleText": "登录"
+				}
+			},
+			{
+				"path": "pages/me/register",
+				"style": {
+					"navigationBarTitleText": "注册"
+				}
+			},
+			{
+				"path": "pages/me/forgetPassword",
+				"style": {
+					"navigationBarTitleText": "忘记密码"
+				}
+			},
+			{
+				"path": "pages/me/resetPassword",
+				"style": {
+					"navigationBarTitleText": "重置密码"
+				}
+			},
+			{
+				"path": "pages/pay/payment",
+				"style": {
+					"navigationBarTitleText": "支付"
+				}
+			},
+			{
+				"path": "pages/pay/success",
+				"style": {
+					"navigationBarTitleText": "支付结果"
+				}
+			},
+			{
+				"path": "pages/active/index",
+				"style": {
+					"navigationBarTitleText": "活动列表"
+				}
+			},
+			{
+				"path": "pages/active/firstOrder",
+				"style": {
+					"navigationBarTitleText": "首单优惠"
+				}
+			},
+			{
+				"path": "pages/active/goods",
+				"style": {
+					"navigationBarTitleText": "商品活动"
+				}
+			},
+			{
+				"path": "pages/active/goodsSelect",
+				"style": {
+					"navigationBarTitleText": "选择商品"
+				}
+			},
+			{
+				"path": "pages/active/moneyOff",
+				"style": {
+					"navigationBarTitleText": "满减"
+				}
+			},
+			{
+				"path": "pages/active/coupon",
+				"style": {
+					"navigationBarTitleText": "优惠券"
+				}
+			}, {
+				"path": "pages/store/apply",
+				"style": {
+					"navigationBarTitleText": "申请店铺"
+				}
+			}
+		]
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "七点校园",
+		"navigationBarBackgroundColor": "#333333",
+		"backgroundColor": "#EFEFEF"
+	},
+	"permission": {
+		"scope.userLocation": {
+			"desc": "你的位置信息将用于附近商家的效果展示"
+		}
+	},
+	"tabBar": {
+		"color": "#666",
+		"selectedColor": "#333",
+		"borderStyle": "black",
+		"backgroundColor": "#fafafa",
+		"position": "bottom",
+		"list": [{
+				"pagePath": "pages/order/index",
+				"iconPath": "static/images/icon_tabbar_order.png",
+				"selectedIconPath": "static/images/icon_tabbar_order_selected.png",
+				"text": "订单"
+			},
+			{
+				"pagePath": "pages/store/index",
+				"iconPath": "static/images/icon_tabbar_store.png",
+				"selectedIconPath": "static/images/icon_tabbar_store_selected.png",
+				"text": "店铺"
+			}
+		]
+	}
+}

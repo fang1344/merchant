@@ -1,0 +1,170 @@
+.uni-box {
+	padding: 0upx;
+	border: #CCCCCC solid 1upx;
+}
+
+/* .uni-box-section {
+	display: flex;
+	flex: 1;
+	flex-direction: row;
+	background-color: #cccccc;
+	height: 100upx;
+	justify-content: center;
+	align-items: center;
+} */
+
+.uni-gap{
+  height: 20upx;
+  background: #E0E0E0;
+}
+
+.uni-center {
+  justify-content: center;
+  align-items: center;
+}
+
+/*背景颜色*/
+.uni-background-black {
+	background: #000000
+}
+
+.uni-background-white {
+	background: #FFFFFF
+}
+
+.uni-background-primary {
+	background: #007aff
+}
+
+.uni-background-green,
+.uni-background-success {
+	background: #4cd964;
+}
+
+.uni-background-warning,
+.uni-background-yellow {
+	background: #f0ad4e
+}
+
+.uni-background-danger,
+.uni-background-red {
+	background: #dd524d
+}
+
+.uni-background-purple,
+.uni-background-royal {
+	background: #8a6de9
+}
+
+.uni-text-bold {
+	font-weight: bold;
+}
+
+.uni-text-discount {
+	text-decoration: line-through;
+}
+
+/*文本颜色*/
+.uni-text-black {
+	color: #000000;
+}
+
+.uni-text-white {
+	color: #FFFFFF;
+}
+
+.uni-text-primary {
+	color: #007aff;
+}
+
+.uni-text-green,
+.uni-text-success {
+	color: #4cd964;
+}
+
+.uni-text-warning,
+.uni-text-yellow {
+	color: #f0ad4e
+}
+
+.uni-text-danger,
+.uni-text-red {
+	color: #dd524d
+}
+
+.uni-text-purple,
+.uni-text-royal {
+	color: #8a6de9
+}
+
+.uni-ellipsis {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+}
+
+.uni-ellipsis-2 {
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	/*! autoprefixer: off */
+	-webkit-box-orient: vertical;
+	/* autoprefixer: on */
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+}
+
+.uni-ellipsis-3 {
+	display: -webkit-box;
+	text-overflow: ellipsis;
+	/*! autoprefixer: off */
+	-webkit-box-orient: vertical;
+	/* autoprefixer: on */
+	-webkit-line-clamp: 3;
+	overflow: hidden;
+}
+
+.uni-badge {
+	border-radius: 10upx;
+}
+
+
+/*padding and margin*/
+.uni-padding {
+	padding: 20upx;
+}
+
+.uni-padding-left {
+	padding-left: 20upx;
+}
+
+.uni-padding-right {
+	padding-right: 20upx;
+}
+
+.uni-padding-bottom {
+	padding-bottom: 20upx;
+}
+
+.uni-padding-top {
+	padding-top: 20upx;
+}
+
+.uni-margin {
+	margin: 20upx;
+}
+
+.uni-margin-left {
+	margin-left: 20upx;
+}
+
+.uni-margin-right {
+	margin-right: 20upx;
+}
+
+.uni-margin-bottom {
+	margin-bottom: 20upx;
+}
+
+.uni-margin-top {
+	margin-top: 20upx;
+}
