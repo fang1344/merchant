@@ -12,13 +12,14 @@ export default async(url = '', data = {}, type = 'GET', uri = 'node') => {
 		url = baseUrl+ url
 	}
 	return new Promise((resolve, reject) => {
-		var header = {
-			Token:uni.getStorageSync('token')
-		}
-		var position = uni.getStorageSync('position')
+		var header = {}
+		var position = uni.getStorageInfoSync('position')
 		if (position){
 			header.Lat = position.lat;
 			header.Lng = position.lng;
+		}
+		if(uni.getStorageSync('token')){
+			header.token = uni.getStorageSync('token').toString();
 		}
 		if(debug==1){
 			header.debug = 1;

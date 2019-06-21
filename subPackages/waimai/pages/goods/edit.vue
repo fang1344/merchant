@@ -4,9 +4,9 @@
 			<text class="tit">商品图片</text>
 			<robby-image-upload
 				:server-url="uploadUrl"
-				:form-data="imageName"
+				:form-data="imageAttach"
 				:fileKeyName="uploadName"
-				v-model="goods.images"
+				v-model="goods.images_url"
 				@delete="deleteImage"
 				@add="add"
 				:enable-drag="enableDrag"
@@ -58,56 +58,58 @@
 			<switch :checked="reserve_enabled" color="#288bf5" @change="reserveChange" />
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
+		<button class="delete-btn" v-if="type=='edit'" @click="deleteGoods">删除</button>
 	</view>
 </template>
 
 <script>
 import robbyImageUpload from '@/components/robby-image-upload/robby-image-upload.vue';
 // import { uploadUrl } from '@/config/env.js';
-import {getRestaurantGoodsDetail,getRestaurantCategoryList} from '@/src/utils/api.js';
+import {getRestaurantGoodsDetail,getRestaurantCategoryList,saveRestaurantGoods,deleteRestaurantGoods} from '@/src/utils/api.js';
 export default {
 	data() {
 		return {
 			uploadUrl: 'http://serv.moyaomiao.cn/common/upload',
-			imageName:  {
-                    userId: 2
-                },
+			imageAttach:  {},
 			uploadName: 'file',
 			enableDrag: true,
 			enableDel: true,
 			enableAdd: true,
 			limitNumber: 5,
 			categoryName: '请选择',
-			categoryList: [{ id: 1, name: '分类1' }, { id: 2, name: '分类2' }],
+			categoryList: [],
 			categoryKey: 'name',
-			addressData: {
+			type:'add',
+			goods: { 
+				images: [],
+				images_url: [],
+				category_id: '',
 				name: '',
-				mobile: '',
-				addressName: '在地图选择',
-				address: '',
-				area: '',
-				default: false
+				reserve_enabled: 0,
+				description:''
 			},
-			goods: { images: [] }
 		};
 	},
 	async onLoad(option) {
-		let title = '新增商品';
+		if(option.category_id){
+			this.goods.category_id = option.category_id;
+		}
+		var title = '新增商品';
 		if (option.type === 'edit') {
 			title = '编辑商品';
+			this.type = option.type;
 			if(option.id){
 				let res = await getRestaurantGoodsDetail({id:option.id});
 				this.goods = res.data;
-				console.log(this.goods);
-				let category = await getRestaurantCategoryList({store_id:this.goods.store_id})
-				this.categoryList = category.data;
-				this.categoryList.map(item=>{
-					if(item.id=this.goods.category_id){
-						this.categoryName = item.name;
-					}
-				})
 			}
 		}
+		let category = await getRestaurantCategoryList()
+		this.categoryList = category.data;
+		this.categoryList.map(item=>{
+			if(item.id=this.goods.category_id){
+				this.categoryName = item.name;
+			}
+		})
 		this.manageType = option.type;
 		uni.setNavigationBarTitle({
 			title
@@ -151,36 +153,38 @@ export default {
 				this.goods.reserve_enabled = 1; 
 			}
 		},
-		deleteImage(e) {},
+		deleteImage(e) {
+			this.goods.images.splice(e.index,1);
+			console.log(this.goods);
+		},
 		add(e) {
-			this.goods.images = e;
+			console.log('add',e);
+			this.goods.images.push(e.result[0].data.hash)
+			console.log(this.goods.images);
 		},
 		
 		catagoryChange(item) {
 			this.categoryName = this.categoryList[item.detail.value].name;
+			this.goods.category_id = this.categoryList[item.detail.value].id;
 		},
 		//提交
-		confirm() {
-			let data = this.addressData;
-			if (!data.name) {
-				this.$api.msg('请填写收货人姓名');
-				return;
-			}
-			if (!data.address) {
-				this.$api.msg('请在地图选择所在位置');
-				return;
-			}
-			if (!data.area) {
-				this.$api.msg('请填写门牌号信息');
-				return;
-			}
-
-			//this.$api.prePage()获取上一页实例，可直接调用上页所有数据和方法，在App.vue定义
-			this.$api.prePage().refreshList(data, this.manageType);
-			this.$api.msg(`地址${this.manageType == 'edit' ? '修改' : '添加'}成功`);
-			setTimeout(() => {
-				uni.navigateBack();
-			}, 800);
+		async confirm() {
+			let res = await saveRestaurantGoods(this.goods);
+			this.$api.msg(res.message);
+			if(res.errno==0){
+				setTimeout(() => {
+					uni.navigateBack();
+				}, 800);
+			}		
+		},
+		async deleteGoods(){
+			let res = await deleteRestaurantGoods({id:this.goods.id});
+			this.$api.msg(res.message);
+			if(res.errno==0){
+				setTimeout(() => {
+					uni.navigateBack();
+				}, 800);
+			}	
 		}
 	}
 };
@@ -257,5 +261,9 @@ page {
 }
 .add-btn {
 	@include btn();
+}
+.delete-btn {
+	@include btn();
+	background-color: $mtRed-color;
 }
 </style>

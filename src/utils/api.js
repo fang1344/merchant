@@ -22,8 +22,11 @@ export const getUserMoneyDetail = (params) => request('user/moneyDetail', params
 /**
  * 获取用户金额使用记录
  */
-export const getUserMoneyRecord = (params) => request('user/fundRecord/list', params, 'get', 'lumen')
+export const getUserFundRecordList = (params) => request('user/fundRecord/list', params, 'get', 'lumen')
 
+export const getUserCoinRecordList = (params) => request('user/coinRecord/list', params, 'get', 'lumen')
+
+export const getUserStampRecordList = (params) => request('user/stampRecord/list',params, 'get', 'lumen')
 
 /**
  * 获取红包列表
@@ -55,6 +58,8 @@ export const updateRestaurantStoreData = (params) => request('restaurant/store/u
  */
 export const submitOrder = (params) => request('restaurant/order/create', params, "post", "lumen")
 
+
+
 export const buyerSubmitOrder = (params) => request('buyer/order/create', params, "post", "lumen")
 
 /**
@@ -72,6 +77,10 @@ export const payPrepayIdFunc = (params) => request('common/pay', params, "get", 
  */
 export const getUserDefaultAddress = () => request('user/address/defaultAddress', {}, 'get', 'lumen')
 
+/**
+ * 申请店铺
+ */
+export const applyStore = (params) => request('restaurant/store/apply',params,'post','lumen')
 /**
  * 获取shop页面商铺详情
  */
@@ -93,9 +102,16 @@ export const getRestaurantCategoryList = (params) => request('restaurant/categor
 
 export const saveRestaurantCategory = (params) => request('restaurant/category/save', params, 'post', 'lumen');
 
+export const getRestaurantCategoryDetail = (params) => request('restaurant/category/detail', params, 'get', 'lumen');
+
 export const sortRestaurantCategory = (params) => request('restaurant/category/sort', params, 'post', 'lumen');
 
 export const sortRestaurantGoods = (params) => request('restaurant/goods/sort', params, 'post', 'lumen');
+
+export const saveRestaurantGoods = (params) => request('restaurant/goods/save', params, 'post', 'lumen');
+export const shelveRestaurantGoods = (params) => request('restaurant/goods/shelve', params, 'get', 'lumen');
+export const deleteRestaurantGoods = (params) => request('restaurant/goods/delete', params, 'get', 'lumen');
+
 
 /**
  * 获取饭店订单列表
@@ -192,16 +208,12 @@ export const getTopicCommentList = (params) => {
 /**
  * 收藏列表
  */
-export const getCollectList = (params) => {
-	return request('collect/list', params)
-}
+export const getCollectList = (params) => request('collect/list', params,  'get', 'lumen')
 
 /**
  *  添加或取消收藏
  */
-export const collectAddOrDelete = (params) => {
-	return request('collect/addordelete', params)
-}
+export const collectAddOrDelete = (params) => request('buyer/collectGoods/addOrDelete1', params, 'get', 'lumen')
 
 /**
  * 获取品牌列表
@@ -691,7 +703,7 @@ export const getVerifyCode =(params)=> request('user/auth/getVerifyCode', params
  *登陆
  */
 
-export const userLogin =(params)=> request('user/login',{params}, 'POST','lumen') 
+export const userLogin =(params)=> request('user/login',params, 'POST','lumen') 
 
  
 /**

@@ -1,20 +1,23 @@
 <template>
 	<view class="container">
 		<view class="tj-sction">
-			<view>现金账户(元)</view>
-			<view>20.00</view>
+			<view class="desc">
+				<view>{{accountName}}</view>
+				<view>{{amount}}</view>
+			</view>
 			<button type="primary" class="recharge" @click="navTo('/subPackages/waimai/pages/me/deposit')">充值</button>
 			<button class="withdraw" @click="navTo('/subPackages/waimai/pages/me/withdraw')">提现</button>
 		</view>
 
 		<!-- 账户 -->
-		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bank')" iconColor="#e07472" title="账户明细" tips=""></list-cell>
-		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bankPassword')" iconColor="#5fcda2" title="常见问题" tips=""></list-cell>
+		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/transactionLog')" iconColor="#e07472" title="账户明细" tips=""></list-cell>
+		<!-- <list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bankPassword')" iconColor="#5fcda2" title="常见问题" tips=""></list-cell> -->
 	</view>
 </template>
 <script>
 import listCell from '@/components/mix-list-cell';
 import { mapState } from 'vuex';
+import {getUserInfo} from "../../../../src/utils/api.js"
 let startY = 0,
 	moveY = 0,
 	pageAtTop = true;
@@ -24,34 +27,39 @@ export default {
 	},
 	data() {
 		return {
+			type:1,
+			accountName: '现金账户(元)',
+			amount: 0,
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			moving: false
 		};
 	},
-	onLoad() {},
-	// #ifndef MP
-	onNavigationBarButtonTap(e) {
-		const index = e.index;
-		if (index === 0) {
-			this.navTo('/subPackages/waimai/pages/set/set');
-		} else if (index === 1) {
-			// #ifdef APP-PLUS
-			const pages = getCurrentPages();
-			const page = pages[pages.length - 1];
-			const currentWebview = page.$getAppWebview();
-			currentWebview.hideTitleNViewButtonRedDot({
-				index
-			});
-			// #endif
-			uni.navigateTo({
-				url: '/subPackages/waimai/pages/notice/notice'
-			});
+	onLoad(option) {
+		if (option.type==2) {
+			this.type=2
+			this.accountName='吃点币账户(元)';
+		}else if(option.type==3){
+			this.type=3
+			this.accountName='粮票账户(元)';
 		}
+		
 	},
-	// #endif
 	computed: {
 		...mapState(['hasLogin', 'userInfo'])
+	},
+	async mounted(){
+		let res = await getUserInfo();
+		if(res.errno==0){
+			if(this.type==1){
+				this.amount = res.data.money;
+			}else if(this.type==2){
+				this.amount = res.data.coin;
+				console.log(res.data);
+			}else{
+				this.amount = res.data.food_stamp+res.data.food_stamp_present;
+			}
+		}
 	},
 	methods: {
 		/**
@@ -64,8 +72,8 @@ export default {
 			// }
 			console.log('navTo');
 			uni.navigateTo({
-				url
-			});
+				url:url+'?type='+this.type
+			})
 		},
 
 		/**
@@ -120,6 +128,16 @@ export default {
 		width: 80%;
 		border-radius: 40upx;
 		margin: 20upx 0;
+	}
+	.desc{
+		color:#ffffff;
+		flex-direction: column;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 300upx;
+		background-color:$theme-color;
 	}
 	.withdraw{
 		width: 80%;

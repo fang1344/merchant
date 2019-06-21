@@ -115,14 +115,17 @@ export default {
 			description: res.data.description
 		};
 		let kind = await getRestaurantKind();
+		console.log('kind_ids',res.data.kind_ids);
+		
 		kind.data.map(item => {
-			if (res.data.kind_ids.indexOf(item.id) > -1) {
+			if (res.data.kind_ids!=null&&res.data.kind_ids.indexOf(item.id) > -1) {
 				item.checked = true;
 			}else{
 				item.checked = false;
 			}
 			item.id = item.id.toString();
 		});
+	
 		this.kindList = kind.data;
 	},
 	components: {
@@ -215,12 +218,12 @@ page {
 		color: $font-color-dark;
 	}
 	.selectBox {
-		background: $mtRed-color !important;
+		background: $theme-color !important;
 		color: #fff !important;
 	}
 	.checkbox {
 		padding: 0 10upx;
-		border: 1px solid $mtRed-color;
+		border: 1px solid $theme-color;
 		margin: 10upx;
 		border-radius: 7upx;
 		color:$font-color-base;

@@ -115,7 +115,7 @@ export default {
 			let success = res.success
 			if(success){
 				let token = res.data.token
-				localStorage.setItem('token',token)
+				uni.setStorageSync('token',token)
 				setTimeout(()=>{
 					uni.navigateTo({ url: '/subPackages/waimai/pages/store/apply' });
 				},1000)

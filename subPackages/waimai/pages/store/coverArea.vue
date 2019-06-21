@@ -27,6 +27,11 @@ export default {
 				polygon: '',
             }
         },
+		onLoad(e){
+			if(e.token){
+				uni.setStorageSync('token',e.token);
+			}
+		},
         mounted() {
                  this.getData();
         },
@@ -36,21 +41,48 @@ export default {
 				if (res.data.cover_area_arr.length > 0) {
 					// console.log(res.data.cover_area_arr);
 					this.coverAreaArray = res.data.cover_area_arr
+				}else{
+					this.coverAreaArray = [
+						[
+							(parseFloat(res.data.latitude)-0.01).toFixed(5),
+							(parseFloat(res.data.longitude)+0.01).toFixed(5)
+						],
+						[
+							(parseFloat(res.data.latitude)+0.01).toFixed(5),
+							(parseFloat(res.data.longitude)+0.01).toFixed(5)
+						],
+						[
+							(parseFloat(res.data.latitude)+0.01).toFixed(5),
+							(parseFloat(res.data.longitude)-0.01).toFixed(5)
+						],
+						[
+							(parseFloat(res.data.latitude)-0.01).toFixed(5),
+							(parseFloat(res.data.longitude)-0.01).toFixed(5)
+						],
+						
+						
+					]
 				}
-				this.mapInit();
+				console.log(res.data.latitude);
+				console.log(res.data.longitude);
+				console.log(this.coverAreaArray);
+				this.mapInit(res.data.latitude,res.data.longitude);
             },
-            mapInit() {
+            mapInit(latitude,longitude) {
                let that = this;
+			   console.log(longitude);
                TMap('RXKBZ-37F6Q-LVD5P-G5IHP-YNV4J-UUB7R').then(qq => {
                    that.map = new qq.maps.Map(document.getElementById("mapArea"), {
                         // 地图的中心地理坐标。
                        //39.916527,116.397128
-                        center: new qq.maps.LatLng(39.916527, 116.397128),
+					   
+                        center: new qq.maps.LatLng(latitude, longitude),
                         zoom: 13
                     });
 					this.coverAreaArray.map(res=>{
 						that.path.push(new qq.maps.LatLng(res[0], res[1]))
 					})
+					console.log('path',that.path);
 					that.polygon = new qq.maps.Polygon({
 				 
 						//多边形是否可点击。

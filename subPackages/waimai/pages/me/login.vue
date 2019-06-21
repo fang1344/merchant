@@ -155,11 +155,23 @@ export default {
 			};
 			console.log('sendData', sendData);
 			const result = await userLogin(sendData);
-			if(true){
-				// this.login(result.data);
-			    //             uni.navigateBack();
+			if(result.errno==0){
+				uni.setStorageSync('token',result.data.token)
+				if(uni.getStorageSync('token')==''){
+					this.$api.msg('token设置失败');
+					return false;
+				}
+				if(result.data.store_id){
+					uni.switchTab({
+						url:'/pages/store/index'
+					})
+				}else{
+					uni.navigateTo({
+						url:'../store/apply'
+					})
+				}
 			}else{
-				this.$api.msg('登陆失败');
+				this.$api.msg(result.message);
 				this.logining = false;
 			}
 		},

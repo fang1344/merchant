@@ -16,17 +16,6 @@
 			<text>联系人：</text>
 			<input placeholder="请填写店长姓名" v-model="linkman" placeholder-style="font-size: 24upx" auto-focus />
 		</view>
-		<view class="sex">
-			<view class="l"></view>
-			<view class="m" @click="changeGander(1)">
-				<i :class="gander_1"></i>
-				<text>先生</text>
-			</view>
-			<view class="r" @click="changeGander(2)">
-				<i :class="gander_2"></i>
-				<text>女士</text>
-			</view>
-		</view>
 		<view class="phone">
 			<text>店铺名称：</text>
 			<input placeholder="请填写店铺名称" v-model="name" placeholder-style="font-size: 24upx;" auto-focus />
@@ -45,7 +34,7 @@
 </template>
 
 <script>
-import { saveAddress, getAddressDetail } from '@/src/utils/api';
+import { applyStore } from '@/src/utils/api';
 import avatar from '@/components/yq-avatar/yq-avatar.vue';
 import { uploadUrl } from '@/config/env.js';
 import { updateRestaurantStoreData } from '@/src/utils/api.js';
@@ -62,23 +51,16 @@ export default {
 			name: '',
 			image_hash:'',
 			linkman: '',
-			address: '点击选择'
+			address: '点击选择',
+			latitude: '',
+			longitude: '',
+			
 		};
 	},
 	async onLoad(e) {
-		if (e.id) {
-			var detail = await getAddressDetail({ id: e.id });
-			if (detail.data.gander == 2) {
-				this.gander_1 = 'icon mt-unselected-o';
-				this.gander_2 = 'icon mt-selected-o';
-				this.gander = 2;
-			}
-			this.id = detail.data.id;
-			this.name = detail.data.name;
-			this.phone = detail.data.phone;
-			this.address = detail.data.address;
-			this.houseNumber = detail.data.bedroom_num;
-		}
+		let storage = uni.getStorageInfoSync();
+		console.log('storage');
+		console.log(uni.getStorageSync('token'));
 	},
 	components: {
 		avatar
@@ -114,11 +96,14 @@ export default {
 			}
 		},
 		choiceAddress() {
-			console.log('choiceAddress');
 			var that = this;
 			uni.chooseLocation({
+				type: 'gcj02',
 				success: function(res) {
+					console.log(res);
 					that.address = res.address;
+					that.latitude = res.latitude;
+					that.longitude = res.longitude;
 				}
 			});
 		},
@@ -135,22 +120,27 @@ export default {
 				util.showErrorToast('请选择地址');
 				return false;
 			}
-			if (this.houseNumber == '') {
-				util.showErrorToast('请填写门牌号');
+			if (this.image_hash ==''){
+				util.showErrorToast('请设置店铺图片');
 				return false;
 			}
-			console.log(this.address);
-			// return false;
-			const res = await saveAddress({
-				id: this.id,
+			
+			const res = await applyStore({
+				image:this.image_hash,
 				name: this.name,
 				gander: this.gander,
-				phone: this.phone,
+				linkman: this.linkman,
 				address: this.address,
-				bedroom_num: this.houseNumber
+				latitude: this.latitude,
+				longitude: this.longitude
 			});
 			if (res.errno === 0) {
-				uni.navigateBack({});
+				uni.switchTab({
+					url:'/pages/store/index'
+				})
+			}else{
+				util.showErrorToast(res.message);
+				return false;
 			}
 		}
 	}

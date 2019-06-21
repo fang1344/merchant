@@ -10,7 +10,7 @@
 			</view>
 			<view class="vip-card-box">
 				<image class="card-bg" src="http://img.moyaomiao.cn/static/images/vip-card-bg.png" mode=""></image>
-				<navigator class="b-btn" url="/pages/store/cooperateIntro?id=1">立即开通</navigator>
+				<navigator class="b-btn" url="/subPackages/waimai/pages/store/cooperateIntro?id=1">立即开通</navigator>
 				<view class="tit">
 					<text class="yticon icon-iLinkapp-"></text>
 					联盟商家
@@ -101,12 +101,12 @@
 						src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=191678693,2701202375&fm=26&gp=0.jpg"
 						mode="aspectFill"
 					></image>
-				</scroll-view> -->
+				</scroll-view>  onclick="window.android.startPrinter()"-->
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/info')" icon="icon-businesscard" iconColor="" title="基本信息" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/cooperate')" icon="icon-cooperate" iconColor="" title="合作方案" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/active/index')" icon="icon-huodong2" iconColor="" title="活动设置" tips=""></list-cell>
-				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/coverArea')" icon="icon-businesscard" iconColor="" title="区域管理" tips=""></list-cell>
-				<list-cell onclick="window.android.startPrinter()" icon="icon-print" iconColor=""  title="打印机管理" tips="请使用APP"></list-cell>
+				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/coverAreaLink')" icon="icon-businesscard" iconColor="" title="区域管理" tips=""></list-cell>
+				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/printer')" icon="icon-print" iconColor=""  title="打印机管理" tips="请使用APP"></list-cell>
 			</view>
 			<button class="logout" @click="logout">退出登录</button>
 		</view>
@@ -169,6 +169,9 @@ export default {
 			// if(!this.hasLogin){
 			// 	url = '/subPackages/waimai/pages/me/login';
 			// }
+			if(url == '/subPackages/waimai/pages/store/coverAreaLink'){
+				url += '?token='+uni.getStorageSync('token');
+			}
 			console.log('navTo');
 			uni.navigateTo({
 				url

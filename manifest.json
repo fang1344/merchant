@@ -23,19 +23,76 @@
             "Bluetooth" : {},
             "OAuth" : {},
             "Fingerprint" : {},
-            "VideoPlayer" : {}
+            "VideoPlayer" : {},
+            "iBeacon" : {},
+            "Statistic" : {},
+            "Speech" : {}
         },
         "distribute" : {
             "plugins" : {},
             "android" : {
                 "permissions" : [
+                    "<uses-feature android:name=\"android.hardware.camera\"/>",
+                    "<uses-feature android:name=\"android.hardware.camera.autofocus\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_CHECKIN_PROPERTIES\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_COARSE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_FINE_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_LOCATION_EXTRA_COMMANDS\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_MOCK_LOCATION\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_SURFACE_FLINGER\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCESS_WIFI_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.ACCOUNT_MANAGER\"/>",
+                    "<uses-permission android:name=\"android.permission.ADD_VOICEMAIL\"/>",
+                    "<uses-permission android:name=\"android.permission.AUTHENTICATE_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.BATTERY_STATS\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_PRIVILEGED\"/>",
+                    "<uses-permission android:name=\"android.permission.BROADCAST_WAP_PUSH\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PHONE\"/>",
+                    "<uses-permission android:name=\"android.permission.CALL_PRIVILEGED\"/>",
+                    "<uses-permission android:name=\"android.permission.CAMERA\"/>",
+                    "<uses-permission android:name=\"android.permission.CAPTURE_AUDIO_OUTPUT\"/>",
+                    "<uses-permission android:name=\"android.permission.CAPTURE_SECURE_VIDEO_OUTPUT\"/>",
+                    "<uses-permission android:name=\"android.permission.CAPTURE_VIDEO_OUTPUT\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_COMPONENT_ENABLED_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_CONFIGURATION\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_NETWORK_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_MULTICAST_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.CHANGE_WIFI_STATE\"/>",
                     "<uses-permission android:name=\"android.permission.GET_ACCOUNTS\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_PACKAGE_SIZE\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_TASKS\"/>",
+                    "<uses-permission android:name=\"android.permission.GET_TOP_ACTIVITY_INFO\"/>",
+                    "<uses-permission android:name=\"android.permission.GLOBAL_SEARCH\"/>",
+                    "<uses-permission android:name=\"android.permission.HARDWARE_TEST\"/>",
+                    "<uses-permission android:name=\"android.permission.INJECT_EVENTS\"/>",
+                    "<uses-permission android:name=\"android.permission.INSTALL_LOCATION_PROVIDER\"/>",
+                    "<uses-permission android:name=\"android.permission.INSTALL_PACKAGES\"/>",
+                    "<uses-permission android:name=\"android.permission.INSTALL_SHORTCUT\"/>",
+                    "<uses-permission android:name=\"android.permission.INTERNET\"/>",
+                    "<uses-permission android:name=\"android.permission.MOUNT_UNMOUNT_FILESYSTEMS\"/>",
                     "<uses-permission android:name=\"android.permission.READ_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_LOGS\"/>",
+                    "<uses-permission android:name=\"android.permission.READ_PHONE_STATE\"/>",
+                    "<uses-permission android:name=\"android.permission.RECEIVE_BOOT_COMPLETED\"/>",
+                    "<uses-permission android:name=\"android.permission.RECORD_AUDIO\"/>",
                     "<uses-permission android:name=\"android.permission.USE_FINGERPRINT\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_CALL_LOG\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_CONTACTS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_GSERVICES\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_HISTORY_BOOKMARKS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_PROFILE\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SECURE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SMS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SOCIAL_STREAM\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_SYNC_SETTINGS\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_USER_DICTIONARY\"/>",
+                    "<uses-permission android:name=\"android.permission.WRITE_VOICEMAIL\"/>",
+                    "<uses-permission android:name=\"android.permission.RECEIVE_USER_PRESENT\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH\"/>",
                     "<uses-permission android:name=\"android.permission.BLUETOOTH_ADMIN\"/>"
                 ]
@@ -83,6 +140,15 @@
             "sdkConfigs" : {
                 "push" : {
                     "unipush" : {}
+                },
+                "speech" : {
+                    "ifly" : {}
+                },
+                "maps" : {
+                    "amap" : {
+                        "appkey_ios" : "a864ccd3373a57db5935ab5369c8f547",
+                        "appkey_android" : "1a71224987f6e26b6d0b060d105ba0c7"
+                    }
                 }
             }
         },

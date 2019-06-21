@@ -69,15 +69,20 @@ const actions = {
 			foods = foods.map(item => {
 				item.count = 0
 				item.totalPrice = 0
-				console.log(item);
 				return item
 			})
 			commit('changeFoodsDataMut', foods)
 			var arr = state.foods[0].spus.map(item => {
-				item.sequence = 0
+				item.sequence = 0;
+				if(item.state==1){
+					item.shelve_text = '下架'
+				}else{
+					item.shelve_text = '上架'
+				}
 				return item
 			})
 			var spus = {
+				id: foods[0].id,
 				title: foods[0].name,
 				index: 0,
 				list: arr
@@ -135,10 +140,10 @@ const actions = {
 		index
 	}) {
 		var spus = {}
+		spus.id = state.foods[index].id
 		spus.title = state.foods[index].name
 		spus.index = index
 		spus.list = state.foods[index].spus.map(item => {
-			if (!item.sequence) item.sequence = 0
 			return item
 		})
 		console.log('getCategoryMenuData',spus);

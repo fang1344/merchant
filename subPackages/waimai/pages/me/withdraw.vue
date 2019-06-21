@@ -10,14 +10,14 @@
 				</view>
 			</view>
 			<view class="money-container mt-10">
-				<view class="money-box">
+				<view class="money-box" >
 					<view>￥</view>
 					<view><input type="number" v-model="withdrawMoney" :placeholder="withdrawTip" placeholder-style="font-size:12px;color#f2f2f2;" /></view>
-					<view class="button">全部提现</view>
+					<view class="button"  @click="withdrawAll()"><text>全部提现</text></view>
 				</view>
 				<view class="tips">
-					<text>可提现：{{ userInfo.money }}元</text>
-					<text>{{ withdraw.remark }}</text>
+					<text>可提现：{{ remaining }}元</text>
+					<text>{{ remark }}</text>
 				</view>
 			</view>
 			<view class="button-box mt-10"><button @tap="confirmPwd" type="primary">确认提现</button></view>
@@ -39,6 +39,7 @@ export default {
 	},
 	data() {
 		return {
+			type: 1,
 			tabCurrentIndex: 0,
 			swiperCurrentIndex: 0,
 			titleShowId: 'tabTag-0',
@@ -55,7 +56,9 @@ export default {
 			}
 		};
 	},
-	onLoad() {},
+	onLoad(option) {
+		this.type = option.type;
+	},
 	methods: {
 		async done(password) {
 			console.log(password);
@@ -74,6 +77,11 @@ export default {
 				this.$api.msg(res.message);
 				return false;
 			}
+		},
+		withdrawAll(){
+			console.log('asasaas');
+			this.withdrawMoney = this.remaining;
+			console.log(this.withdrawMoney);
 		},
 		confirmPwd() {
 			if(this.withdrawMoney>this.userInfo.money){
@@ -100,8 +108,6 @@ export default {
 		}
 	},
 	async mounted() {
-
-		console.log(this.bankcard);
 		let res2 = await getWithdrawInfo();
 		this.withdraw = res2.data;
 		this.withdrawTip = '最低提现'+res2.data.min_draw+'元,单次最高提现'+res2.data.max_draw+'元';
@@ -110,6 +116,40 @@ export default {
 		this.bank_name = this.userInfo.bankcard.bank_name;
 		this.card_num_show = this.userInfo.bankcard.card_num.substr(-4);
 		console.log('user',user);
+	},
+	computed: {
+		remaining() {
+			var res = 0;
+			switch(this.type){
+				case '1':
+					res = this.userInfo.money;
+					break;
+				case '2' :
+					res = this.userInfo.coin;
+					break;
+				case '3' :
+					res = this.userInfo.food_stamp;
+				default:
+					break;
+			}
+			return res;
+		},
+		remark(){
+			var res = 0;
+			switch(this.type){
+				case '1':
+					res = this.withdraw.remark;
+					break;
+				case '2' :
+					res = this.withdraw.icon_remark;
+					break;
+				case '3' :
+					res = this.withdraw.food_stamp_remark;
+				default:
+					break;
+			}
+			return res;
+		}
 	},
 	onReady() {
 		//获取屏幕高度及比例
@@ -242,6 +282,7 @@ uni-button[type='primary'] {
 .money-container .money-box .button {
 	font-size: 12px;
 	color: #cf9f41;
+	position: relative;
 }
 .money-container .money-box view:nth-child(1) {
 	font-size: 25px;

@@ -2,8 +2,32 @@
 export default {
 	onLaunch: function() {
 		// console.log(e);
-		console.log('App Launch');
-		// play();
+		// console.log('App Launch');
+		// // play();
+		// // #ifdef APP-PLUS
+		// const _self = this;
+		// const _handlePush = function(message) {
+		// 	/**
+		// 	 * 通过 vuex 来同步页面的数据，仅做演示。
+		// 	 * 实际开发中，这里可能是跳转到某个页面等操作，请根据自身业务需求编写。
+		// 	 */
+		// 	_self.updatePushMessage(message);
+		// };
+		// plus.push.addEventListener('click', function(message) {
+		// 	plus.nativeUI.toast(JSON.parse(message));
+		// 	uni.navigateTo({
+		// 		url: '/subPackages/waimai/pages/order/detail?order_code=DD1559486528349931552',
+		// 		success: res => {},
+		// 		fail: () => {},
+		// 		complete: () => {}
+		// 	});
+		// 	_handlePush(message);
+		// });
+		// plus.push.addEventListener('receive', function(message) {
+		// 	plus.nativeUI.toast('push receive');
+		// 	_handlePush(message);
+		// });
+		// // #endif
 	},
 	onShow: function() {
 		console.log('App Show');

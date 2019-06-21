@@ -138,7 +138,6 @@
 				this.loadData()
 			}
 			// #endif
-			
 		},
 		 
 		methods: {
@@ -166,17 +165,23 @@
 				
 				navItem.loadingType = 'loading';
 				let res = await getRestaurantOrderList({order_state: navItem.state});
-				
-				navItem.orderList = res.data.data;
-				console.log(navItem.orderList);
-				//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
-				this.$set(navItem, 'loaded', true);
-				if(res.data.current_page==res.data.last_page){
-					//判断是否还有数据， 有改为 more， 没有改为noMore 
-					navItem.loadingType = 'noMore';
+				if(res.errno==0){
+					navItem.orderList = res.data.data;
+					console.log(navItem.orderList);
+					//loaded新字段用于表示数据加载完毕，如果为空可以显示空白页
+					this.$set(navItem, 'loaded', true);
+					if(res.data.current_page==res.data.last_page){
+						//判断是否还有数据， 有改为 more， 没有改为noMore 
+						navItem.loadingType = 'noMore';
+					}else{
+						navItem.loadingType = 'more';
+					}
 				}else{
-					navItem.loadingType = 'more';
+					uni.navigateTo({
+						url:'../../subPackages/waimai/pages/me/login'
+					})
 				}
+				
 				
 				// setTimeout(()=>{
 				// 	let orderList = Json.orderList.filter(item=>{

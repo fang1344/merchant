@@ -2,18 +2,18 @@
 	<div class="container">
 		<div class="list-c" v-if="pageIndex === 0">
 			<scroll-view class="list-l" :scroll-y="true">
-				<div class="l-item" :class="{ active: index === tagIndex }" v-for="(item, index) in foods" :key="index" @click="categoryClick(item, index)">
+				<div class="l-item" :class="{ active: index === tagIndex }" v-for="(item, index) in foodsList" :key="index" @click="categoryClick(item, index)">
 					<span v-if="item.required == 1" class="required-category">必选</span>
 					<img :src="item.icon" v-if="item.icon.length > 0" />
 					<span>{{ item.name }}</span>
 					<text class="count" v-if="item.count > 0">{{ item.count }}</text>
 				</div>
-				<view class="add-category">+添加分类</view>
+				<navigator url="/subPackages/waimai/pages/goods/categoryEdit" class="add-category">+添加分类</navigator>
 			</scroll-view>
 			<scroll-view class="list-r" :scroll-y="true">
 				<div class="section">
 					<span class="title">{{ spus.title }}</span>
-					<span class="edit-category">编辑该分类</span>
+					<span class="edit-category" v-if="spus.id!=''" @click="editCategory(spus.id)">编辑该分类</span>
 				</div>
 				<div class="item-list" v-for="(item, index) in spus.list" :key="index">
 					<div class="item" @click="itemClick(item, index)">
@@ -26,7 +26,7 @@
 								<span class="price">￥{{ item.min_price }}</span>
 								<div class="add-item">
 									<div class="add-l" @click="editGoods(item)">编辑</div>
-									<div class="add-r" @click.stop="addClick(item, index)">下架</div>
+									<div class="add-r" @click.stop="shelve(item)">{{item.shelve_text}}</div>
 								</div>
 							</div>
 							<div class="tags-c"><img class="tags" :src="itm.picture_url" v-for="(itm, idx) in item.product_label_picture_list" :key="idx" /></div>
@@ -38,7 +38,7 @@
 		<div class="footer-c">
 			<navigator class="l" url="/subPackages/waimai/pages/goods/category"><text>分类排序</text></navigator>
 			<navigator class="m" url="/subPackages/waimai/pages/goods/goodsSort"><text>商品排序</text></navigator>
-			<navigator class="r" url="/subPackages/waimai/pages/goods/edit"><text>新建商品</text></navigator>
+			<view class="r" @click="addGoods()"><text>新建商品</text></view>
 		</div>
 	</div>
 </template>
@@ -49,6 +49,7 @@ import { mapState, mapActions, mapMutations, mapGetters } from 'vuex';
 import { formatYMD } from '@/src/utils/formatTime';
 import util from '@/src/utils/util.js';
 import { _array } from '@/src/utils/arrayExtension';
+import {shelveRestaurantGoods} from '@/src/utils/api.js';
 
 export default {
 	data() {
@@ -56,7 +57,8 @@ export default {
 			tagIndex: 0,
 			pageIndex: 0,
 			left: '40upx',
-			stars: [1, 2, 3, 4]
+			stars: [1, 2, 3, 4],
+			foodsList:[],
 		};
 	},
 	onLoad(e) {
@@ -70,10 +72,12 @@ export default {
 			let left = this.left;
 			let style = { left };
 			return jointStyle(style);
-		}
+		},
+		
 	},
 	onShow(e) {
 		this.getMenuDataAction();
+		this.foodsList = this.foods;
 	},
 	methods: {
 		...mapMutations('shoppingCart', ['changeReduceFeeDataMut', 'changeSkuModalMut', 'changeItemModalMut']),
@@ -90,12 +94,20 @@ export default {
 			'changeSkuModalDataAction',
 			'previewItemAction'
 		]),
-
 		categoryClick(item, index) {
 			this.tagIndex = index;
 			this.getCategoryMenuDataAction({ index });
 		},
-		
+		editCategory(id){
+			uni.navigateTo({
+				url:'categoryEdit?id='+id
+			})
+		},
+		addGoods(){
+			uni.navigateTo({
+				url:'/subPackages/waimai/pages/goods/edit?category_id='+this.spus.id
+			})
+		},
 		shopClick() {
 			this.left = 182 + 'upx';
 			this.pageIndex = 2;
@@ -121,6 +133,22 @@ export default {
 				url: '/subPackages/waimai/pages/goods/edit?id=' + item.id + '&type=edit'
 			});
 		},
+		async shelve(item) {
+			console.log(item.shelve_text);
+			if(item.state==1){
+				item.state = 2;
+				item.shelve_text = '上架';
+			}else{
+				item.state = 1;
+				item.shelve_text = '下架';
+			}
+			console.log(item.shelve_text);
+			let res = await shelveRestaurantGoods({id:item.id,state:item.state});
+			this.$api.msg(res.message)
+			// if(res.errno==0){
+			// 	item.state=state
+			// }
+		}
 	}
 };
 </script>

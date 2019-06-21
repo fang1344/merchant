@@ -1,15 +1,15 @@
 <template>
 	<view class="container">
 		<view class="tj-sction">
-			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdraw">
+			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=2">
 				<text class="num">{{info.coin}}</text>
-				<text>七点币</text>
+				<text>吃点币</text>
 			</navigator>
-			<view class="tj-item">
+			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=3">
 				<text class="num">{{info.food_stamp}}</text>
 				<text>粮票</text>
-			</view>
-			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo">
+			</navigator>
+			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=1">
 				<text class="num">{{info.money}}</text>
 				<text>现金</text>
 			</navigator>
@@ -17,11 +17,11 @@
 		
 		<!-- 账户 -->
 		<view class="title">账户设置</view>
-		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bank')" icon="icon-iconfontweixin" iconColor="#e07472" title="银行卡" :tips="bankcardTips"></list-cell>
-		<list-cell @eventClick="setPayPassword" icon="icon-dizhi" iconColor="#5fcda2" title="支付密码" tips="去修改"></list-cell>
+		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bank')" icon="icon-bank" iconColor="#e07472" title="银行卡" :tips="bankcardTips"></list-cell>
+		<list-cell @eventClick="setPayPassword" icon="icon-pwd" iconColor="#5fcda2" title="支付密码" tips="去修改"></list-cell>
 		
 		<view class="title">结算说明</view>
-		<list-cell @click="navTo('/subPackages/waimai/pages/product/product')" icon="icon-pinglun-copy" iconColor="#ee883b" title="结算周期" tips="T+3"></list-cell>
+		<list-cell @click="navTo('/subPackages/waimai/pages/product/product')" icon="icon-iconfont-jiesuan" iconColor="#ee883b" title="结算周期" tips="T+3"></list-cell>
 	</view>
 </template>
 <script>

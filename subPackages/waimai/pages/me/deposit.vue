@@ -6,7 +6,7 @@
 			</view>
 			<view class="content">
 				<view class="my">
-					我的账户余额：0 元
+					我的账户余额：{{remaining}} 元
 				</view>
 			</view>
 		</view>
@@ -46,7 +46,7 @@
 								支付宝支付
 							</view>
 							<view class="right">
-								<radio :checked="paytype=='alipay'" color="#f06c7a" />
+								<radio :checked="paytype=='alipay'" color="#288bf5" />
 							</view>
 					</view>
 					<view class="row" @tap="paytype='wxpay'">
@@ -57,7 +57,7 @@
 								微信支付
 							</view>
 							<view class="right">
-								<radio :checked="paytype=='wxpay'" color="#f06c7a" />
+								<radio :checked="paytype=='wxpay'" color="#288bf5" />
 							</view>
 					</view>
 				</view>
@@ -75,13 +75,30 @@
 </template>
 
 <script>
+	import {getUserInfo} from '@/src/utils/api.js'
 	export default {
 		data() {
 			return {
+				type: 1,
+				remaining: 0,
 				inputAmount:'',//金额
 				amountList:[10,50,100],//预设3个可选快捷金额
 				paytype:'alipay'//支付类型
 			};
+		},
+		onLoad(e){
+			this.type=e.type
+		},
+		async mounted(){
+			let res = await getUserInfo();
+			if(this.type==1){
+				this.remaining = res.data.money;
+			}else if(this.type==2){
+				this.remaining = res.data.coin;
+			}else if(this.type == 3){
+				this.remaining = res.data.food_stamp;
+			}
+			console.log(this.type,this.remaining);
 		},
 		methods:{
 			select(amount){
@@ -116,9 +133,6 @@
 					},300);
 				},700)
 			}
-		},
-		onLoad() {
-			
 		},
 	}
 </script>
@@ -159,7 +173,7 @@
 						background-color: #f1f1f1;
 						color: 333;
 						&.on{
-							background-color: #f06c7a;
+							background-color: $theme-color;
 							color: #fff;
 						}
 					}
@@ -183,7 +197,7 @@
 							margin: 0 20upx;
 							height: 60upx;
 							font-size: 30upx;
-							color: #f06c7a;
+							color: $theme-color;
 							justify-content: flex-end;
 							align-items: center;
 						}
@@ -236,7 +250,7 @@
 			justify-content: center;
 			align-items: center;
 			color: #fff;
-			background-color: #f06c7a;
+			background-color: $theme-color;
 			box-shadow: 0upx 5upx 10upx rgba(0,0,0,0.2);
 		}
 		.tis{
@@ -248,7 +262,7 @@
 			align-items: baseline;
 			color: #999;
 			.terms{
-				color: #5a9ef7;
+				color: $theme-color;
 			}
 		}
 	}

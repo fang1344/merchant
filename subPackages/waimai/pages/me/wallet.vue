@@ -18,40 +18,33 @@
 			<div class="item">
 				<div class="item-l"><span class="title wait">待结算账户</span></div>
 				<div class="r">
-					<span class="amount">查看全部账单</span>
+					<navigator class="amount" url="./orderBill">查看全部账单</navigator>
 					<i class="icon mt-arrow-right-o"></i>
 				</div>
 			</div>
-			<div class="item">
-				<div class="item-l"><span class="title">今日预计</span></div>
-				<span class="amount">￥9.90</span>
+			<div class="item" v-for="(item,index) in wallet.wait" :key="index">
+				<div class="item-l"><span class="title">{{item.date}}</span></div>
+				<span class="amount">￥{{item.profit}}</span>
 				<div class="r">
-					<span class="r-l">预计05/22结算</span>
+					<span class="r-l">预计{{item.settleDate}}结算</span>
 					<i class="icon mt-arrow-right-o"></i>
 				</div>
 			</div>
-			<div class="item">
-				<div class="item-l"><span class="title">2019/05.17</span></div>
-				<span class="amount">￥9.90</span>
-				<div class="r">
-					<span class="r-l">预计05/22结算</span>
-					<i class="icon mt-arrow-right-o"></i>
-				</div>
-			</div>
+			
 		</div>
 		<div class="list-c">
 			<div class="item">
 				<div class="item-l"><span class="title already">已结算账户</span></div>
 				<div class="r">
-					<span class="amount">查看全部账单</span>
+					<navigator class="amount" url="./orderBill">查看全部账单</navigator>
 					<i class="icon mt-arrow-right-o"></i>
 				</div>
 			</div>
 			<div class="item">
-				<div class="item-l"><span class="title">2019/05.17</span></div>
-				<span class="amount">￥9.90</span>
+				<div class="item-l"><span class="title">{{wallet.already.date}}</span></div>
+				<span class="amount">￥{{wallet.already.profit}}</span>
 				<div class="r">
-					<span class="r-l">预计05/22结算</span>
+					<span class="r-l">预计{{wallet.already.settleDate}}结算</span>
 					<i class="icon mt-arrow-right-o"></i>
 				</div>
 			</div>
@@ -67,7 +60,13 @@ import {getRestaurantWallet} from '@/src/utils/api.js'
 export default {
 	data() {
 		return {
-			wallet: []
+			wallet: {
+				already:{
+					date:'',
+					profit:'',
+					settleDate:''
+				}
+			}
 		};
 	},
 	computed: {
@@ -195,6 +194,7 @@ page{
 				
 			}
 			.item-l {
+				width: 170upx;
 			}
 			.r-l {
 				font-size: 28upx;

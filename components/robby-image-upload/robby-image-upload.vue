@@ -57,7 +57,7 @@
 				if(this.enableAdd === false){
 					return false
 				}
-				
+				console.log('length',this.value.length);
 				if(this.limit && this.value.length >= this.limit){
 					return false
 				}
@@ -138,7 +138,7 @@
 													});
 												}
 												console.log('success to upload image: ' + res.data)
-												resolve('success to upload image:' + remoteUrlIndex)
+												resolve(data)
 											}else{
 												console.log('fail to upload image:'+res.data)
 												reject('failt to upload image:' + remoteUrlIndex)
@@ -154,7 +154,8 @@
 							Promise.all(promiseWorkList).then((result)=>{
 								_self.$emit('add', {
 									currentImages: imagePathArr,
-									allImages: _self.value
+									allImages: _self.value,
+									result: result
 								})
 								_self.$emit('input', _self.value)
 							})
@@ -175,7 +176,8 @@
 				
 				this.$emit('delete',{
 					currentImage: deletedImagePath,
-					allImages: this.value
+					allImages: this.value,
+					index:imageIndex
 				})
 				this.$emit('input', this.value)
 			},
