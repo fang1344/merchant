@@ -150,6 +150,7 @@ const actions = {
 		item
 	) {
 		var foods = state.foods;
+	
 		if(foods.length>0){
 			foods.map(goods => {
 				if(goods.id==item.id){

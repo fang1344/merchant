@@ -5,7 +5,7 @@
 			<div class="item">
 				<div class="item-l"><span class="sub-title">开始时间</span></div>
 				<span>
-					<picker mode="date" :value="active.start_time_text" :start="startDate" :end="endDate" @change="bindStartDateChange">
+					<picker mode="date" v-model="active.start_time_text" :start="startDate" :end="endDate" @change="bindStartDateChange">
 						<view class="text">{{ active.start_time_text }}</view>
 					</picker>
 				</span>
@@ -14,7 +14,7 @@
 			<div class="item">
 				<div class="item-l"><span class="sub-title">结束时间</span></div>
 				<span>
-					<picker mode="date" :value="active.end_time_text" :start="startDate" :end="endDate" @change="bindEndDateChange">
+					<picker mode="date" v-model="active.end_time_text" :start="startDate" :end="endDate" @change="bindEndDateChange">
 						<view class="text">{{ active.end_time_text }}</view>
 					</picker>
 				</span>
@@ -46,16 +46,20 @@
 				<i>份</i>
 			</div>
 		</div>
-		<div class="btn" @click="goodsSelect">下一步</div>
+		<div class="btn" v-if="id!=''" @click="activitySave">保存</div>
+		<div class="btn" v-else @click="goodsSelect">下一步</div>
 	</div>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-
+import {getActivityDetail,saveStoreGoodsActivity} from '@/src/utils/api.js'
 export default {
 	data() {
 		return {
+			id : '',
+			goods_ids:'',
+			activity:{},
 			discountUnit:'元',
 			activeType:[
 				{
@@ -83,15 +87,30 @@ export default {
 		},
 		
 	},
+	async onLoad(option) {
+		if(option.id){
+			this.id=option.id;
+			
+		}
+	},
 	async mounted() {
-		this.active.start_time_text = this.startDate;
-		var date = this.active.start_time_text.replace(/-/g, '/');
-		var timestamp = new Date(date).getTime();
-		this.active.start_time = parseInt(timestamp.toString().substr(0, 10));
-		this.active.end_time_text = this.startDate;
-		var date = this.active.end_time_text.replace(/-/g, '/');
-		var timestamp = new Date(date).getTime();
-		this.active.end_time = parseInt(timestamp.toString().substr(0, 10)) + 86399;
+		if(this.id){
+			let res = await getActivityDetail({id:this.id})
+			if(res.errno==0){
+				this.goods_ids = [res.data.store_goods_id]
+				this.setDataAction(res.data);
+				this.end_time_text = res.data.end_time_text;
+			}
+		}else{
+			this.active.start_time_text = this.startDate;
+			var date = this.active.start_time_text.replace(/-/g, '/');
+			var timestamp = new Date(date).getTime();
+			this.active.start_time = parseInt(timestamp.toString().substr(0, 10));
+			this.active.end_time_text = this.startDate;
+			var date = this.active.end_time_text.replace(/-/g, '/');
+			var timestamp = new Date(date).getTime();
+			this.active.end_time = parseInt(timestamp.toString().substr(0, 10)) + 86399;
+		}
 		if(this.active.type==2){
 			this.discountUnit = '折';
 		}
@@ -116,6 +135,20 @@ export default {
 				url: '/subPackages/waimai/pages/active/goodsSelect'
 			});
 		},
+		async activitySave() {
+			var data = this.active;
+			data.goods_ids = this.goods_ids;
+			let res = await saveStoreGoodsActivity(data);
+			this.$api.msg(res.message);
+			if(res.errno==0){
+				setTimeout(() => {
+					uni.navigateBack({
+						delta: 1
+					});
+				}, 800);
+				
+			}
+		},
 		getDate(type) {
 			const date = new Date();
 			let year = date.getFullYear();
@@ -132,17 +165,14 @@ export default {
 			return `${year}-${month}-${day}`;
 		},
 		bindStartDateChange(e) {
-			this.start_time_text = e.detail.value;
-			console.log('start_time_text', this.start_time_text);
-			var date = this.start_time_text.replace(/-/g, '/');
+			this.active.start_time_text = e.detail.value;
+			var date = this.active.start_time_text.replace(/-/g, '/');
 			var timestamp = new Date(date).getTime();
 			this.active.start_time = parseInt(timestamp.toString().substr(0, 10));
 		},
 		bindEndDateChange(e) {
-			this.end_time_text = e.detail.value;
-			console.log('end_time_text', this.end_time_text);
-
-			var date = this.end_time_text.replace(/-/g, '/');
+			this.active.end_time_text = e.detail.value;
+			var date = this.active.end_time_text.replace(/-/g, '/');
 			var timestamp = new Date(date).getTime();
 			this.active.end_time = parseInt(timestamp.toString().substr(0, 10)) + 86399;
 		}

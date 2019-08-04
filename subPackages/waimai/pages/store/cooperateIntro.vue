@@ -92,9 +92,13 @@ export default {
 		cooperation() {
 			switch (this.id) {
 				case '1':
+					uni.navigateTo({
+						url: '/subPackages/waimai/pages/pay/payment?product_id='+this.pattern.id+'&name='+this.pattern.name+'&money='+this.pattern.cost
+					});
+					break;
 				case '2':
 					uni.navigateTo({
-						url: '/subPackages/waimai/pages/pay/payment?name='+this.pattern.name+'&money='+this.pattern.cost
+						url: '/subPackages/waimai/pages/pay/charmPay?product_id='+this.pattern.id+'&name='+this.pattern.name+'&money='+this.pattern.cost
 					});
 					break;
 				case 3:

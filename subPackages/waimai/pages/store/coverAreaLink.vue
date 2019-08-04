@@ -7,7 +7,7 @@
 export default {
 	data() {
 		return {
-			url: 'http://192.168.0.103:1026/subPackages/waimai/pages/store/coverArea'
+			url: 'http://172.20.10.6:1024/subPackages/waimai/pages/store/coverArea'
 		};
 	},
 	async onLoad(e) {

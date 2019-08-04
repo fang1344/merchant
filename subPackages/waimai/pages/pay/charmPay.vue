@@ -2,16 +2,6 @@
 	<view>
 		<view class="block">
 			<view class="title">
-				我的账户
-			</view>
-			<view class="content">
-				<view class="my">
-					我的账户余额：{{remaining}} 元
-				</view>
-			</view>
-		</view>
-		<view class="block">
-			<view class="title">
 				充值金额
 			</view>
 			<view class="content">
@@ -60,7 +50,7 @@
 								<radio :checked="paytype=='wxpay'" color="#288bf5" />
 							</view>
 					</view>
-					<view class="row" @tap="paytype='coin'" v-if="type==3">
+					<view class="row" @tap="paytype='coin'">
 							<view class="left" >
 								<image style="width: 60upx;height: 60upx; margin-left: 14upx;" src="http://img.moyaomiao.cn/static/images/coin.png"></image>
 							</view>
@@ -94,7 +84,7 @@
 				userInfo:{},
 				remaining: 0,
 				inputAmount:'',//金额
-				amountList:[10,50,100],//预设3个可选快捷金额
+				amountList:[200,400,600],//预设3个可选快捷金额
 				paytype:'alipay'//支付类型
 			};
 		},
@@ -118,34 +108,53 @@
 			select(amount){
 				this.inputAmount = amount;
 			},
-			doDeposit(){
+			async doDeposit(){
 				if (parseFloat(this.inputAmount).toString() == "NaN") {
 					uni.showToast({title:'请输入正确金额',icon:'none'});
 					return ;
 				}
-				if(this.inputAmount<=0){
-					uni.showToast({title:'请输入大于0的金额',icon:'none'});
+				if(this.inputAmount<=200){
+					uni.showToast({title:'请输入大于200的金额',icon:'none'});
 					return ;
 				}
 				if(parseFloat(this.inputAmount).toFixed(2)!=parseFloat(this.inputAmount)){
 					uni.showToast({title:'最多只能输入两位小数哦~',icon:'none'});
 					return ;
 				}
-				//模板模拟支付，实际应用请调起微信/支付宝
-				uni.showLoading({
-					title:'支付中...'
-				});
-				setTimeout(()=>{
-					uni.hideLoading();
-					uni.showToast({
-						title:'支付成功'
+				if (this.paytype=='coin') {
+					uni.showLoading({
+						title:'吃点币支付中...'
+					});
+					let res = await saveStoreProductOrder({
+						pay_type:3,
+						product_id: this.product_id
+					})
+					if(res.errno==1){
+						this.$api.msg(res.message);
+					}else{
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'/subPackages/waimai/pages/pay/success?amount='+this.amount
+							});
+						},300);
+					}
+				}else{
+					//模板模拟支付，实际应用请调起微信/支付宝
+					uni.showLoading({
+						title:'支付中...'
 					});
 					setTimeout(()=>{
-						uni.redirectTo({
-							url:'../../pay/success/success?amount='+this.inputAmount
+						uni.hideLoading();
+						uni.showToast({
+							title:'支付成功'
 						});
-					},300);
-				},700)
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'../../pay/success/success?amount='+this.inputAmount
+							});
+						},300);
+					},700)
+				}
 			}
 		},
 	}

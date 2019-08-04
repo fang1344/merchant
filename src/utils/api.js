@@ -9,6 +9,7 @@ export const authLoginByWeixin = (code, userInfo) => request('auth/loginByWeixin
 });
 export const getPrepay = (params) => request('common/pay', params, 'get', 'lumen')
 
+export const getActivityDetail = (params) => request('restaurant/storeGoodsActivity/detail', params, 'get', 'lumen')
 /**
  * 获取优惠券列表
  */
@@ -25,6 +26,8 @@ export const getUserMoneyDetail = (params) => request('user/moneyDetail', params
 export const getUserFundRecordList = (params) => request('user/fundRecord/list', params, 'get', 'lumen')
 
 export const getUserCoinRecordList = (params) => request('user/coinRecord/list', params, 'get', 'lumen')
+
+export const getUserCoinFixedRecordList = (params) => request('user/coinFixedRecord/list', params, 'get', 'lumen')
 
 export const getUserStampRecordList = (params) => request('user/stampRecord/list',params, 'get', 'lumen')
 
@@ -109,9 +112,12 @@ export const sortRestaurantCategory = (params) => request('restaurant/category/s
 export const sortRestaurantGoods = (params) => request('restaurant/goods/sort', params, 'post', 'lumen');
 
 export const saveRestaurantGoods = (params) => request('restaurant/goods/save', params, 'post', 'lumen');
+export const updateRestaurantGoodsAttrs = (params)  => request('restaurant/goods/updateAttrs', params, 'post', 'lumen');
+
 export const shelveRestaurantGoods = (params) => request('restaurant/goods/shelve', params, 'get', 'lumen');
 export const deleteRestaurantGoods = (params) => request('restaurant/goods/delete', params, 'get', 'lumen');
 
+export const systemGoodsImages = (params) => request('restaurant/images/list', params, 'get', 'lumen');
 
 /**
  * 获取饭店订单列表
@@ -224,6 +230,21 @@ export const getBrandList = (params) => request('buyer/brand/list', params, 'get
  * 获取品牌详情
  */
 export const getBrandDetail = (params) => request('buyer/brand/detail', params, 'get', 'lumen')
+
+/**
+ * 获取品牌详情
+ */
+export const getSelfBrandDetail = (params) => request('restaurant/brand/detail', params, 'get', 'lumen')
+
+/**
+ * 保存品牌信息
+ */
+export const saveBrand = (params) => request('restaurant/brand/save',params,'post','lumen')
+
+/**
+ * 保存店铺购买产品订单
+ */
+export const saveStoreProductOrder = (params) => request('restaurant/storeProductOrder/save',params,'post','lumen')
 
 /**
  * 获取商品列表

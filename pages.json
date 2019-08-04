@@ -12,7 +12,11 @@
 				"navigationBarTitleText": "店铺"
 			}
 		}
-	],
+	    ,{
+            "path" : "pages/about/about",
+            "style" : {}
+        }
+    ],
 	"subPackages": [{
 		"root": "subPackages/waimai",
 		"pages": [{
@@ -44,6 +48,12 @@
 				"path": "pages/goods/category",
 				"style": {
 					"navigationBarTitleText": "分类"
+				}
+			},
+			{
+				"path": "pages/goods/attr",
+				"style": {
+					"navigationBarTitleText": "属性管理"
 				}
 			},
 			{
@@ -102,7 +112,6 @@
 					"navigationBarTitleText": "充值"
 				}
 			},
-
 			{
 				"path": "pages/me/account",
 				"style": {
@@ -245,7 +254,28 @@
 				"style": {
 					"navigationBarTitleText": "申请店铺"
 				}
+			}, {
+				"path": "pages/store/brand",
+				"style": {
+					"navigationBarTitleText": "品牌介绍"
+				}
+			}, {
+				"path": "pages/me/coinFixedRecord",
+				"style": {
+					"navigationBarTitleText": "七点币记录"
+				}
+			},{
+				"path": "pages/pay/charmPay",
+				"style": {
+					"navigationBarTitleText": "开通魅力商家"
+				}
+			},{
+				"path": "pages/goods/imagesSelect",
+				"style": {
+					"navigationBarTitleText": "选择图片"
+				}
 			}
+			
 		]
 	}],
 	"globalStyle": {

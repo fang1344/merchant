@@ -40,6 +40,17 @@
 								<radio :checked="paytype=='wxpay'" color="#f06c7a" />
 							</view>
 					</view>
+					<view class="row" @tap="paytype='coin'">
+							<view class="left" >
+								<image style="width: 60upx;height: 60upx; margin-left: 14upx;" src="http://img.moyaomiao.cn/static/images/coin.png"></image>
+							</view>
+							<view class="center">
+								吃点币支付(剩余：{{userInfo.coin}})
+							</view>
+							<view class="right">
+								<radio :checked="paytype=='coin'" color="#f06c7a" />
+							</view>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -55,36 +66,64 @@
 </template>
 
 <script>
+	import {getUserInfo,saveStoreProductOrder} from '@/src/utils/api.js';
 	export default {
 		data() {
 			return {
+				userInfo:{},
+				product_id: 0,
 				amount:0,
 				orderName:'',
-				paytype:'wxpay'//支付类型
+				paytype:'coin'//支付类型
 			};
 		},
 		onLoad(e) {
 			console.log(e);
+			this.product_id = e.product_id;
 			this.amount = e.money;
 			this.orderName = e.name;
 		},
+		async mounted(){
+			let res = await getUserInfo();
+			this.userInfo = res.data;
+		},
 		methods:{
-			doDeposit(){
-				//模板模拟支付，实际应用请调起微信/支付宝
-				uni.showLoading({
-					title:'支付中...'
-				});
-				setTimeout(()=>{
-					uni.hideLoading();
-					uni.showToast({
-						title:'支付成功'
+			async doDeposit(){
+				if (this.paytype=='coin') {
+					uni.showLoading({
+						title:'吃点币支付中...'
+					});
+					let res = await saveStoreProductOrder({
+						pay_type:3,
+						product_id: this.product_id
+					})
+					if(res.errno==1){
+						this.$api.msg(res.message);
+					}else{
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'/subPackages/waimai/pages/pay/success?amount='+this.amount
+							});
+						},300);
+					}
+				}else{
+					//模板模拟支付，实际应用请调起微信/支付宝
+					uni.showLoading({
+						title:'支付中...'
 					});
 					setTimeout(()=>{
-						uni.redirectTo({
-							url:'/subPackages/waimai/pages/pay/success?amount='+this.amount
+						uni.hideLoading();
+						uni.showToast({
+							title:'支付成功'
 						});
-					},300);
-				},700)
+						setTimeout(()=>{
+							uni.redirectTo({
+								url:'/subPackages/waimai/pages/pay/success?amount='+this.amount
+							});
+						},300);
+					},700)
+				}
+				
 			}
 		}
 	}

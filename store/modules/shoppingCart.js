@@ -144,6 +144,11 @@ const actions = {
 		spus.title = state.foods[index].name
 		spus.index = index
 		spus.list = state.foods[index].spus.map(item => {
+			if(item.state==1){
+				item.shelve_text = '下架'
+			}else{
+				item.shelve_text = '上架'
+			}
 			return item
 		})
 		console.log('getCategoryMenuData',spus);

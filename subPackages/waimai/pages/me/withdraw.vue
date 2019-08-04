@@ -4,9 +4,9 @@
 			<view class="keyboard-container"><uni-keyboard @completed="done" ref="keyboard"></uni-keyboard></view>
 			<view class="payment-container">
 				<view class="payment mt-10" hover-class="payment-active">
-					<view><image src="../../static/ICBC.png"></image></view>
+					<view><text class="iconfont icon-yinhangqia"></text></view>
 					<view>{{ bank_name }}(尾号{{ card_num_show }})</view>
-					<view><uni-icon type="jinrujiantou"></uni-icon></view>
+					<view><text class="iconfont icon-icon-jinru"></text></view>
 				</view>
 			</view>
 			<view class="money-container mt-10">
@@ -18,6 +18,10 @@
 				<view class="tips">
 					<text>可提现：{{ remaining }}元</text>
 					<text>{{ remark }}</text>
+				</view>
+				<view class="tips">
+					<text>最小提现：{{ withdraw.min_draw }}元</text>
+					<text>最大提现：{{ withdraw.max_draw }}元</text>
 				</view>
 			</view>
 			<view class="button-box mt-10"><button @tap="confirmPwd" type="primary">确认提现</button></view>
@@ -61,12 +65,11 @@ export default {
 	},
 	methods: {
 		async done(password) {
-			console.log(password);
-			console.log(this.$refs);
 			let res = await saveUserWithdraw({
 				card_id:this.userInfo.bankcard.id,
 				money: this.withdrawMoney,
-				password: password
+				password: password,
+				type: this.type
 			})
 			if(res.errno==0){
 				uni.navigateTo({
@@ -79,12 +82,10 @@ export default {
 			}
 		},
 		withdrawAll(){
-			console.log('asasaas');
 			this.withdrawMoney = this.remaining;
-			console.log(this.withdrawMoney);
 		},
 		confirmPwd() {
-			if(this.withdrawMoney>this.userInfo.money){
+			if(this.withdrawMoney>this.remaining){
 				this.$api.msg('余额不足');
 				return false;
 			}
@@ -111,11 +112,33 @@ export default {
 		let res2 = await getWithdrawInfo();
 		this.withdraw = res2.data;
 		this.withdrawTip = '最低提现'+res2.data.min_draw+'元,单次最高提现'+res2.data.max_draw+'元';
+	},
+	async onShow(){
 		let user = await getUserInfo();
 		this.userInfo = user.data;
+		
 		this.bank_name = this.userInfo.bankcard.bank_name;
 		this.card_num_show = this.userInfo.bankcard.card_num.substr(-4);
-		console.log('user',user);
+		if(Object.keys(this.userInfo.bankcard).length==0){
+			uni.showModal({
+				content:'您还未绑定银行卡，马上去绑定',
+				showCancel: false,
+				confirmColor:"#F8C219",
+				success: res => {
+					if (res.confirm) {
+					  // //设置按钮可以点击
+					  uni.navigateTo({
+						url: '/subPackages/waimai/pages/me/bank',
+						success: res => {},
+						fail: () => {},
+						complete: () => {}
+					  });
+					}
+				},
+				fail: () => {},
+				complete: () => {}
+			});
+		}
 	},
 	computed: {
 		remaining() {

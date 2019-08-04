@@ -30,7 +30,7 @@
 		methods: {
 			toStore() {
 				uni.switchTab({
-					url: '/subPackages/waimai/pages/store/index'
+					url: '/pages/store/index'
 				});
 			}
 		},

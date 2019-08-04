@@ -1,7 +1,9 @@
 <template>
 	<view class="content">
 		<view class="row b-b row-image">
-			<text class="tit">商品图片</text>
+			<view class="tit"><text>商品图片</text>
+				<navigator url="./imagesSelect" class="select-image">选择系统图片</navigator>
+			</view>
 			<robby-image-upload
 				:server-url="uploadUrl"
 				:form-data="imageAttach"
@@ -14,6 +16,7 @@
 				:enable-add="enableAdd"
 				:limit="limitNumber"
 			></robby-image-upload>
+			
 		</view>
 		<view class="row b-b">
 			<text class="tit">商品名称</text>
@@ -56,6 +59,14 @@
 		<view class="row default-row">
 			<text class="tit">是否可预订</text>
 			<switch :checked="reserve_enabled" color="#288bf5" @change="reserveChange" />
+		</view>
+		<view class="row default-row" v-for="(activity,a_index) in goods.activity" :key="a_index">
+			<text class="tit">参与活动:<text class="activity-type">{{activity.type_name}}</text></text>
+			<navigator class="activity-detail" :url="'../active/goods?id='+activity.id">查看详情</navigator>
+		</view>
+		<view class="row default-row" v-if="this.goods.id">
+			<text class="tit">商品属性</text>
+			<view class="desc" @click="handleAttr">查看</view>
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
 		<button class="delete-btn" v-if="type=='edit'" @click="deleteGoods">删除</button>
@@ -115,6 +126,15 @@ export default {
 			title
 		});
 	},
+	onShow() {
+		if(uni.getStorageSync('goodsSelectedImages')){
+			console.log(uni.getStorageSync('goodsSelectedImages'));
+			uni.getStorageSync('goodsSelectedImages').map(item => {
+				this.goods.images_url.push(item.image_url)
+				this.goods.images.push(item.hash)
+			})
+		}
+	},
 	computed:{
 		putaway:{
 			get(){
@@ -139,6 +159,13 @@ export default {
 		robbyImageUpload
 	},
 	methods: {
+		handleAttr(){
+			console.log(this.goods);
+			uni.navigateTo({
+				
+				url:'./attr?id='+this.goods.id
+			})
+		},
 		switchChange(e) {
 			if(e.detail.value==false){
 				this.goods.state = 2
@@ -158,9 +185,7 @@ export default {
 			console.log(this.goods);
 		},
 		add(e) {
-			console.log('add',e);
 			this.goods.images.push(e.result[0].data.hash)
-			console.log(this.goods.images);
 		},
 		
 		catagoryChange(item) {
@@ -238,11 +263,26 @@ page {
 .row-image {
 	height: auto;
 	padding-right: 0;
+	.select-image{
+		font-size: 20upx;
+		color: $theme-color;
+	}
 }
 .default-row {
 	margin-top: 16upx;
 	.tit {
 		flex: 1;
+		.activity-type{
+			color: $theme-color;
+		}
+	}
+	.desc{
+		font-size: 28upx;
+		color: $theme-color;
+	}
+	.activity-detail{
+		font-size: 28upx;
+		color: $theme-color;
 	}
 	switch{
 		transform:scale(0.8)

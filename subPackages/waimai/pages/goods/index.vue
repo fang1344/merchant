@@ -21,6 +21,7 @@
 						<div class="item-r">
 							<span class="title">{{ item.name }}</span>
 							<span class="sub-title">{{ item.description }}</span>
+							<span class="activity" v-for="activity in item.activity" :key="activity.id"><text class="item">{{activity.type_name}}</text></span>
 							<span class="sale-num">月销售{{ item.month_saled_content }} 赞{{ item.praise_content }}</span>
 							<div class="r-t">
 								<span class="price">￥{{ item.min_price }}</span>
@@ -407,6 +408,19 @@ export default {
 							height: 30upx;
 							margin-top: 10upx;
 						}
+						.activity{
+							// display: flex;
+							height: 30upx;
+							.item{
+								height: 26upx;
+								line-height: 26upx;
+								width: 86upx;
+								color: $theme-color;
+								font-size: 20upx;
+								border: 1upx solid $theme-color;
+								border-radius: 2upx;
+							}
+						} 
 						.sale-num {
 							font-size: 20upx;
 							color: $textDarkGray-color;

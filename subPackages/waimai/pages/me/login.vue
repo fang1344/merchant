@@ -33,7 +33,7 @@
             maxlength="20"
             data-key="password"
             @input="inputChange"
-            @confirm="toLogin"
+          
           >
         </view>
       </view>
@@ -136,7 +136,7 @@ export default {
 		toLogin() {
 			if (this.isActive === 1) {
 				if (this.smsTypeVerify()) {
-					this.sendInfo('sms_mobile', 'auth_code', 2);
+					// this.sendInfo('sms_mobile', 'auth_code', 2);
 				}
 			} else {
 				if (this.passwordTypeVerify()) {
@@ -153,7 +153,6 @@ export default {
 				[modal]: this[modal],
 				type: type
 			};
-			console.log('sendData', sendData);
 			const result = await userLogin(sendData);
 			if(result.errno==0){
 				uni.setStorageSync('token',result.data.token)

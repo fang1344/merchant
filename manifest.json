@@ -155,7 +155,22 @@
         "splashscreen" : {
             "waiting" : true
         },
-        "nativePlugins" : {}
+        "nativePlugins" : {
+            "Html5App-Gprinter" : {
+                "__plugin_info__" : {
+                    "name" : "Android 佳博 蓝牙小票打印机 插件 - [试用版，仅用于自定义基座]",
+                    "description" : "佳博小票打印机插件，支持黑白Logo图片、条型码、二维码打印",
+                    "platforms" : "Android",
+                    "url" : "https://ext.dcloud.net.cn/plugin?id=462",
+                    "android_package_name" : "",
+                    "ios_bundle_id" : "",
+                    "isCloud" : true,
+                    "bought" : 0,
+                    "pid" : "462",
+                    "parameters" : {}
+                }
+            }
+        }
     },
     // 5+App特有相关
     "quickapp" : {},
@@ -164,7 +179,8 @@
         "appid" : "wx916a65e1c8cc893d",
         "setting" : {
             "minified" : true,
-            "urlCheck" : false
+            "urlCheck" : false,
+            "es6" : true
         },
         "permission" : {
             "scope.userLocation" : {

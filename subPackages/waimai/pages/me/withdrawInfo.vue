@@ -1,17 +1,27 @@
 <template>
 	<view class="container">
-		<view class="tj-sction">
-			<view class="desc">
-				<view>{{accountName}}</view>
-				<view>{{amount}}</view>
-			</view>
-			<button type="primary" class="recharge" @click="navTo('/subPackages/waimai/pages/me/deposit')">充值</button>
-			<button class="withdraw" @click="navTo('/subPackages/waimai/pages/me/withdraw')">提现</button>
-		</view>
+		<div class="header-c">
+			<div class="info-c">
+				<view class="title">可提现{{accountName}}（元）</view>
+				<span class="name">{{amount}}</span>
+			</div>
+			<navigator class="withdraw" :url="'/subPackages/waimai/pages/me/withdraw?type='+type">提现</navigator>
+		</div>
+		<div class="header-d">
+			<span class="title">不可提现: {{amount_disabled}}</span>
+			<navigator url='/subPackages/waimai/pages/me/coinFixedRecord'>	
+				<span class="amount">查看详情</span>
+			</navigator>
+		</div>
+		
 
 		<!-- 账户 -->
 		<list-cell @eventClick="navTo('/subPackages/waimai/pages/me/transactionLog')" iconColor="#e07472" title="账户明细" tips=""></list-cell>
 		<!-- <list-cell @eventClick="navTo('/subPackages/waimai/pages/me/bankPassword')" iconColor="#5fcda2" title="常见问题" tips=""></list-cell> -->
+		<view class="tj-sction">
+			<button type="primary" class="recharge" @click="navTo('/subPackages/waimai/pages/me/deposit')">充值</button>
+			<button class="withdraw" @click="navTo('/subPackages/waimai/pages/me/withdraw')">提现</button>
+		</view>
 	</view>
 </template>
 <script>
@@ -28,8 +38,9 @@ export default {
 	data() {
 		return {
 			type:1,
-			accountName: '现金账户(元)',
+			accountName: '余额',
 			amount: 0,
+			amount_disabled: 0,
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			moving: false
@@ -38,10 +49,10 @@ export default {
 	onLoad(option) {
 		if (option.type==2) {
 			this.type=2
-			this.accountName='吃点币账户(元)';
+			this.accountName='吃点币';
 		}else if(option.type==3){
 			this.type=3
-			this.accountName='粮票账户(元)';
+			this.accountName='粮票';
 		}
 		
 	},
@@ -55,9 +66,11 @@ export default {
 				this.amount = res.data.money;
 			}else if(this.type==2){
 				this.amount = res.data.coin;
+				this.amount_disabled = res.data.coin_fixed;
 				console.log(res.data);
 			}else{
-				this.amount = res.data.food_stamp+res.data.food_stamp_present;
+				this.amount = res.data.food_stamp;
+				this.amount_disabled = res.data.food_stamp_disabled;
 			}
 		}
 	},
@@ -118,6 +131,54 @@ export default {
 };
 </script>
 <style lang="scss">
+	.container{
+		.header-c {
+			display: flex;
+			align-items: center;
+			height: 280upx;
+			justify-content: space-between;
+			background-color: $theme-color;
+			.withdraw {
+				margin-top: 40upx;
+				margin-right: 20upx;
+				border: 1upx solid #ffffff;
+				color: #ffffff;
+				font-size: 28upx;
+				padding: 10upx 20upx;
+				border-radius: 40upx;
+			}
+			.info-c {
+				display: flex;
+				flex-direction: column;
+				margin-left: 30upx;
+				.title {
+					font-size: 20upx;
+					color: #ffffff;
+				}
+				.name {
+					font-size: 50upx;
+					color: #ffffff;
+					font-weight: bold;
+					margin-top: 20upx;
+				}
+				.phone {
+					font-size: 28upx;
+					color: $textBlack-color;
+				}
+			}
+		}
+		.header-d {
+			background: #46a0fc;
+			font-size: 28upx;
+			line-height: 90upx;
+			height: 90upx;
+			color: #ffffff;
+			display: flex;
+			justify-content: space-between;
+			padding: 0upx 26upx;
+			
+		}
+	}
 .tj-sction {
 	display: -webkit-flex; /* Safari */
 	display: flex;
