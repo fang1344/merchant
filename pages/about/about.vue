@@ -11,7 +11,6 @@
 		</view>
 
 		<view class="cover-container">
-			<!-- 浏览历史 -->
 			<view class="history-section icon">
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/info')" icon="icon-businesscard" iconColor="" title="特别申明" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/cooperate')" icon="icon-cooperate" iconColor="" title="使用帮助" tips=""></list-cell>

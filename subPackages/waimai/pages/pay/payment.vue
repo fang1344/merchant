@@ -18,7 +18,7 @@
 			</view>
 			<view class="content">
 				<view class="pay-list">
-					<view class="row" @tap="paytype='alipay'">
+				<!-- 	<view class="row" @tap="paytype='alipay'">
 							<view class="left">
 								<image src="http://img.moyaomiao.cn/static/images/alipay.png"></image>
 							</view>
@@ -28,7 +28,7 @@
 							<view class="right">
 								<radio :checked="paytype=='alipay'" color="#f06c7a" />
 							</view>
-					</view>
+					</view> -->
 					<view class="row" @tap="paytype='wxpay'">
 							<view class="left">
 								<image src="http://img.moyaomiao.cn/static/images/wxpay.png"></image>
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-	import {getUserInfo,saveStoreProductOrder} from '@/src/utils/api.js';
+	import {getUserInfo,saveStoreProductOrder,getPrepay} from '@/src/utils/api.js';
 	export default {
 		data() {
 			return {
@@ -89,14 +89,17 @@
 		},
 		methods:{
 			async doDeposit(){
+				
 				if (this.paytype=='coin') {
 					uni.showLoading({
 						title:'吃点币支付中...'
 					});
-					let res = await saveStoreProductOrder({
+					let res = await storeCooperationSave({
 						pay_type:3,
 						product_id: this.product_id
 					})
+					
+					
 					if(res.errno==1){
 						this.$api.msg(res.message);
 					}else{
@@ -107,21 +110,45 @@
 						},300);
 					}
 				}else{
-					//模板模拟支付，实际应用请调起微信/支付宝
 					uni.showLoading({
 						title:'支付中...'
 					});
-					setTimeout(()=>{
+					let res = await storeCooperationSave({
+						pay_type:3,
+						product_id: this.product_id
+					})
+					var prepayInfo = await getPrepay({
+						order_code: res.order_code,
+						driver: 'wechat',
+						gateway: 'app',
+						order_type: 2
+					});
+					if(prepayInfo.errno==0){
 						uni.hideLoading();
 						uni.showToast({
-							title:'支付成功'
+							title:prepayInfo.message
 						});
-						setTimeout(()=>{
-							uni.redirectTo({
-								url:'/subPackages/waimai/pages/pay/success?amount='+this.amount
+					}
+					uni.requestPayment({
+						provider: 'wxpay',
+						orderInfo: prepayInfo, //微信、支付宝订单数据
+						success: function (res) {
+							console.log('success:' + JSON.stringify(res));
+							uni.hideLoading();
+							uni.showToast({
+								title:'支付成功'
 							});
-						},300);
-					},700)
+							setTimeout(()=>{
+								uni.switchTab({
+									url:'/pages/store/index'
+								});
+							},700);
+						},
+						fail: function (err) {
+							uni.hideLoading();
+							console.log('fail:' + JSON.stringify(err));
+						}
+					});		
 				}
 				
 			}

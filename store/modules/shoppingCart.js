@@ -34,7 +34,6 @@ const mutations = {
 	},
 	changeSpusDataMut(state, info) {
 		state.spus = info;
-		console.log(info);
 	},
 	changeCommentDataMut(state, info) {
 		state.commentInfo = info
@@ -65,14 +64,9 @@ const actions = {
 		var shopInfo = data.data || {}
 		commit('changeShopInfoDataMut', shopInfo)
 		var foods = data.data.food_spu_tags
+		
 		if (foods.length > 0) {
-			foods = foods.map(item => {
-				item.count = 0
-				item.totalPrice = 0
-				return item
-			})
-			commit('changeFoodsDataMut', foods)
-			var arr = state.foods[0].spus.map(item => {
+			var arr = foods[0].spus.map(item => {
 				item.sequence = 0;
 				if(item.state==1){
 					item.shelve_text = '下架'
@@ -87,6 +81,7 @@ const actions = {
 				index: 0,
 				list: arr
 			}
+			commit('changeFoodsDataMut', foods);
 			commit('changeSpusDataMut', spus)
 		} else {
 			commit('changeFoodsDataMut', []);
@@ -97,10 +92,8 @@ const actions = {
 		state,
 		commit
 	},item){
-		console.log('foods',state.foods);
 		var foods = state.foods;
 		foods[item.index].list = item.list;
-		console.log('changeFoods',foods);
 		commit('changeFoodsDataMut',foods);
 		
 	},
@@ -197,7 +190,6 @@ const actions = {
 		var array = state.foods
 		var selectedArr = []
 		array.map((item, index) => {
-			console.log(item);
 			item.spus.map((itm, idx) => {
 				if (itm.sequence > 0) {
 					var price = itm.min_price * itm.sequence

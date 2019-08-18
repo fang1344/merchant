@@ -7,7 +7,7 @@
 export default {
 	data() {
 		return {
-			url: 'http://172.20.10.6:1024/subPackages/waimai/pages/store/coverArea'
+			url: 'http://merchant.qidianschool.club/#/pages/store/coverArea'
 		};
 	},
 	async onLoad(e) {

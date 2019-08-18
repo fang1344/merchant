@@ -2,8 +2,7 @@
 	"pages": [{
 			"path": "pages/order/index",
 			"style": {
-				"navigationBarTitleText": "订单",
-				"enablePullDownRefresh": true
+				"navigationBarTitleText": "订单"
 			}
 		},
 		{
@@ -11,8 +10,15 @@
 			"style": {
 				"navigationBarTitleText": "店铺"
 			}
-		}
-	    ,{
+		},
+		{
+			"path": "pages/store/coverArea",
+			"style": {
+				"navigationStyle":"custom"
+				
+			}
+		},
+		{
             "path" : "pages/about/about",
             "style" : {}
         }
@@ -29,7 +35,7 @@
 				"path": "pages/order/detail",
 				"style": {
 					"navigationBarTitleText": "订单详情",
-					"enablePullDownRefresh": true
+					"enablePullDownRefresh": false
 				}
 			},
 			{
@@ -94,16 +100,9 @@
 				}
 			},
 			{
-				"path": "pages/store/coverArea",
-				"style": {
-					"navigationStyle":"custom"
-					
-				}
-			},
-			{
 				"path": "pages/store/coverAreaLink",
 				"style": {
-					"navigationBarTitleText": "经营区域管理"
+					"navigationBarTitleText": "经营区域"
 				}
 			},
 			{
@@ -267,12 +266,22 @@
 			},{
 				"path": "pages/pay/charmPay",
 				"style": {
-					"navigationBarTitleText": "开通魅力商家"
+					"navigationBarTitleText": "开通服务"
 				}
 			},{
 				"path": "pages/goods/imagesSelect",
 				"style": {
 					"navigationBarTitleText": "选择图片"
+				}
+			},{
+				"path": "pages/money/record",
+				"style": {
+					"navigationBarTitleText": "账单流水"
+				}
+			},{
+				"path": "pages/order/record",
+				"style": {
+					"navigationBarTitleText": "订单记录"
 				}
 			}
 			

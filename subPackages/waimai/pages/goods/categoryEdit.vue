@@ -5,13 +5,14 @@
 			<input class="input" type="text" v-model="category.name" placeholder="5字以内" placeholder-class="placeholder" />
 		</view>
 		<button class="add-btn" @click="confirm">提交</button>
+		<button class="delete-btn" @click="deleteCategory">删除</button>
 	</view>
 </template>
 
 <script>
 import robbyImageUpload from '@/components/robby-image-upload/robby-image-upload.vue';
 // import { uploadUrl } from '@/config/env.js';
-import {getRestaurantCategoryDetail,saveRestaurantCategory} from '@/src/utils/api.js';
+import {getRestaurantCategoryDetail,saveRestaurantCategory,deleteRestaurantCategory} from '@/src/utils/api.js';
 export default {
 	data() {
 		return {
@@ -54,12 +55,24 @@ export default {
 					uni.navigateBack();
 				}, 800);
 			}
+		},
+		async deleteCategory(){
+			if(confirm('删除分类，商品将一并删除，请确认!')){
+				let res = await deleteRestaurantCategory({id:this.category.id});
+				this.$api.msg(res.message);
+				if(res.errno==0){
+					setTimeout(() => {
+						uni.navigateBack();
+					}, 800);
+				}
+			}
 		}
 	}
 };
 </script>
 
 <style lang="scss">
+@import '@/static/style/mixin.scss';
 page {
 	background: $page-color-base;
 	padding-top: 16upx;
@@ -123,16 +136,10 @@ page {
 	}
 }
 .add-btn {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	width: 690upx;
-	height: 80upx;
-	margin: 60upx auto;
-	font-size: $font-lg;
-	color: #fff;
-	background-color: $theme-color;
-	border-radius: 10upx;
-	box-shadow: 1px 2px 5px rgba(219, 63, 96, 0.4);
+	@include btn();
+}
+.delete-btn {
+	@include btn();
+	background-color: $mtRed-color;
 }
 </style>

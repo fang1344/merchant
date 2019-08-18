@@ -4,10 +4,16 @@
 			<div class="info-c"><image class="info-image" :src="cooperateType.icon"></image></div>
 			<div class="info-r">
 				<view class="title">{{ cooperateType.value }}</view>
-				<view class="valid-time">定期时间： {{pattern.regular_days}}天</view>
+				<view class="valid-time" v-if="pattern.regular_days">定期时间： {{pattern.regular_days}}天</view>
 				<!-- <view class="valid-time">至 2019-12-12 00:00:00</view> -->
-				<view class="dredge-fee">费用: ￥{{pattern.cost}}</view>
-				<view class="dredge" @click="cooperation">开通</view>
+				<view class="dredge-fee" v-if="pattern.cost>0">费用: ￥{{pattern.cost}}</view>
+				<view class="dredge-fee" v-if="pattern.min_cost>0">最低费用: ￥{{pattern.min_cost}}</view>
+				<view class="dredge" @click="cooperation" v-if="dredge">开通</view>
+				<view class="dredge-fee" v-if="storeProduct.list.length>0">
+					<view>您已经是尊贵的{{pattern.name}}用户</view>
+					<view v-if="this.id==2">当前魅力值：{{storeProduct.total_money}}</view>
+					<view v-if="storeProduct.list[0].end_time_text">合作期限至：{{storeProduct.list[0].end_time_text}}</view>
+				</view>
 			</div>
 		</div>
 		<div class="header-d">
@@ -34,12 +40,16 @@
 
 <script>
 import { mapState, mapMutations, mapActions, mapGetters } from 'vuex';
-import {getRestaurantCooperationPattern} from '@/src/utils/api.js'
+import {getRestaurantCooperationPattern,getStoreProduct} from '@/src/utils/api.js'
 
 export default {
 	data() {
 		return {
 			id: '',
+			storeProduct: {
+				list:[],
+				total_money:0
+			},
 			pattern: {},
 			cooperate: [
 				{
@@ -76,17 +86,27 @@ export default {
 				console.log(item.key, this.id);
 				if (item.key == this.id) {
 					res = item;
-					console.log(res);
 				}
 			});
 			return res;
+		},
+		dredge(){
+			console.log('repeat_buy',this.pattern.repeat_buy);
+			let res = this.storeProduct.list.length==0||this.pattern.repeat_buy==1
+			return res;
+		},
+		dredge_text(){
+			return '开通'
 		}
 	},
 	async mounted() {
 		// if(Object.keys(this.userInfo).length==0){
 		let res = await getRestaurantCooperationPattern({id:this.id});
 		this.pattern = res.data;
-		console.log(this.pattern);
+		let storeProduct = await getStoreProduct({product_id:this.id});
+		if (Object.keys(storeProduct).length>0) {
+			this.storeProduct = storeProduct.data;
+		}
 	},
 	methods: {
 		cooperation() {
@@ -105,7 +125,7 @@ export default {
 				case 4:
 				default:
 					uni.navigateTo({
-						url: '/subPackages/waimai/pages/me/deposit'
+						url: '/subPackages/waimai/pages/pay/charmPay?product_id='+this.pattern.id+'&name='+this.pattern.name
 					});
 					break;
 			}

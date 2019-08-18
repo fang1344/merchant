@@ -36,14 +36,14 @@
 			<image class="arc" src="http://img.moyaomiao.cn/static/images/arc.png"></image>
 
 			<view class="tj-sction">
-				<view class="tj-item">
+				<navigator class="tj-item" url="/subPackages/waimai/pages/money/record?today=1">
 					<text class="num">0</text>
 					<text>今日预计收入</text>
-				</view>
-				<view class="tj-item">
+				</navigator>
+				<navigator class="tj-item" url="/subPackages/waimai/pages/order/record?today=1">
 					<text class="num">0</text>
-					<text>有效订单</text>
-				</view>
+					<text>今日有效订单</text>
+				</navigator>
 				<!-- <view class="tj-item">
 					<text class="num">20</text>
 					<text>积分</text>
@@ -67,47 +67,16 @@
 			</view>
 			<!-- 浏览历史 -->
 			<view class="history-section icon">
-				<!-- <view class="sec-header">
-					<text class="yticon icon-lishijilu"></text>
-					<text>最近售卖商品</text>
-				</view>
-				<scroll-view scroll-x class="h-list">
-					<image
-						@click="navTo('/subPackages/waimai/pages/store/league')"
-						src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105186633&di=c121a29beece4e14269948d990f9e720&imgtype=0&src=http%3A%2F%2Fimg004.hc360.cn%2Fm8%2FM04%2FDE%2FDE%2FwKhQplZ-QteEBvsbAAAAADUkobU751.jpg"
-						mode="aspectFill"
-					></image>
-					<image
-						@click="navTo('/subPackages/waimai/pages/store/league')"
-						src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105231218&di=09534b9833b5243296630e6d5b728eff&imgtype=0&src=http%3A%2F%2Fimg002.hc360.cn%2Fm1%2FM05%2FD1%2FAC%2FwKhQcFQ3iN2EQTo8AAAAAHQU6_8355.jpg"
-						mode="aspectFill"
-					></image>
-					<image
-						@click="navTo('/subPackages/waimai/pages/me/deposit')"
-						src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2691146630,2165926318&fm=26&gp=0.jpg"
-						mode="aspectFill"
-					></image>
-					<image
-						@click="navTo('/subPackages/waimai/pages/store/league')"
-						src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105320890&di=c743386be51f2c4c0fd4b75754d14f3c&imgtype=0&src=http%3A%2F%2Fimg007.hc360.cn%2Fhb%2FMTQ1OTg4ODY0MDA3Ny05OTQ4ODY1NDQ%3D.jpg"
-						mode="aspectFill"
-					></image>
-					<image
-						@click="navTo('/subPackages/waimai/pages/product/product')"
-						src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553105443324&di=8141bf13f3f208c61524d67f9bb83942&imgtype=0&src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F01ac9a5548d29b0000019ae98e6d98.jpg"
-						mode="aspectFill"
-					></image>
-					<image
-						@click="navTo('/subPackages/waimai/pages/product/product')"
-						src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=191678693,2701202375&fm=26&gp=0.jpg"
-						mode="aspectFill"
-					></image>
-				</scroll-view>  onclick="window.android.startPrinter()"-->
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/info')" icon="icon-businesscard" iconColor="" title="基本信息" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/cooperate')" icon="icon-cooperate" iconColor="" title="合作方案" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/active/index')" icon="icon-huodong2" iconColor="" title="活动设置" tips=""></list-cell>
-				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/coverAreaLink')" icon="icon-businesscard" iconColor="" title="区域管理" tips=""></list-cell>
-				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/brand')" icon="icon-businesscard" iconColor="" title="品牌介绍" tips=""></list-cell>
+				<!-- #ifdef H5 -->
+					<list-cell @eventClick="navTo('/pages/store/coverArea')" icon="icon-ditu" iconColor="" title="区域管理" tips=""></list-cell>
+				<!-- #endif -->
+				<!-- #ifndef H5 -->
+					<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/coverAreaLink')" icon="icon-ditu" iconColor="" title="区域管理" tips=""></list-cell>
+				<!-- #endif -->
+				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/brand')" icon="icon-pinpai" iconColor="" title="品牌介绍" tips=""></list-cell>
 				<list-cell @eventClick="navTo('/subPackages/waimai/pages/store/printer')" icon="icon-print" iconColor=""  title="打印机管理"></list-cell>
 				<list-cell @eventClick="navTo('/pages/about/about')" icon="icon-businesscard" iconColor=""  title="关于我们"></list-cell>
 			</view>
@@ -128,7 +97,8 @@ export default {
 	},
 	data() {
 		return {
-			storeData: {},
+			token: '',
+			storeData: {product:[]},
 			coverTransform: 'translateY(0px)',
 			coverTransition: '0s',
 			moving: false,
@@ -137,8 +107,26 @@ export default {
 	},
 	async onShow() {
 		let res = await getRestaurantStoreDetail({hasProduct:true});
-		this.storeData = res.data;
-		console.log(this.storeData);
+		if(res.errno==-5){
+			this.$api.msg(res.message);
+			setTimeout(function(){
+				uni.navigateTo({
+					url:'../../subPackages/waimai/pages/me/login'
+				})
+			},700);
+		}else if(res.errno==-15){
+			this.$api.msg(res.message);
+			setTimeout(function(){
+				uni.navigateTo({
+					url:'../../subPackages/waimai/pages/store/apply'
+				})
+			},700);
+		}else if(res.errno==0){
+			this.token=uni.getStorageSync('token');
+			this.storeData = res.data;
+		}else{
+			this.$api.msg(res.message);
+		}
 	},
 	// #ifndef MP
 	onNavigationBarButtonTap(e) {
@@ -229,6 +217,7 @@ export default {
 			this.coverTransform = 'translateY(0px)';
 		},
 		logout() {
+			uni.setStorageSync('token','')
 			uni.navigateTo({
 				url: '/subPackages/waimai/pages/me/login'
 			});

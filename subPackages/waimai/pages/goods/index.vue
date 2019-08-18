@@ -6,7 +6,6 @@
 					<span v-if="item.required == 1" class="required-category">必选</span>
 					<img :src="item.icon" v-if="item.icon.length > 0" />
 					<span>{{ item.name }}</span>
-					<text class="count" v-if="item.count > 0">{{ item.count }}</text>
 				</div>
 				<navigator url="/subPackages/waimai/pages/goods/categoryEdit" class="add-category">+添加分类</navigator>
 			</scroll-view>
@@ -67,6 +66,12 @@ export default {
 			uni.setStorageSync('token', e.token);
 		}
 	},
+	async mounted() {
+		await this.getMenuDataAction();
+		this.foodsList = this.foods;
+		
+		console.log(this.foodsList);
+	},
 	computed: {
 		...mapState('shoppingCart', ['shopInfo', 'foods', 'spus', 'commentInfo', 'visibleSkuModal', 'visibleItemModal', 'skuInfo', 'previewInfo']),
 		lineStyle() {
@@ -75,10 +80,6 @@ export default {
 			return jointStyle(style);
 		},
 		
-	},
-	onShow(e) {
-		this.getMenuDataAction();
-		this.foodsList = this.foods;
 	},
 	methods: {
 		...mapMutations('shoppingCart', ['changeReduceFeeDataMut', 'changeSkuModalMut', 'changeItemModalMut']),
@@ -282,8 +283,6 @@ export default {
 	.list-c {
 		width: 100%;
 		display: flex;
-		position: fixed;
-		top: 90upx;
 		bottom: 90upx;
 		.list-l {
 			display: flex;

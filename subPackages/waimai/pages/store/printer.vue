@@ -8,14 +8,13 @@
 			<button @click="State" >打印机状态</button>
 			
 			<button @click="Dis" >断开打印机</button>
-			<text>{{title}}</text>
+			<!-- <text>{{title}}</text> -->
 		</view>
 	</view>
 </template>
 
 
 <script>
-	
 	// require插件名称  
 	const gp= uni.requireNativePlugin('Html5App-Gprinter'); 
 	export default {
@@ -33,7 +32,9 @@
 				const _this=this;
 				gp.BluetoothPort({setBackgroundColor:"#2088d2"},result=>{
 					_this.title=JSON.stringify(result);
+					_this.$api.msg(result.msg)
 				});
+				
 			},
 			Port()
 			{  
@@ -41,18 +42,9 @@
 				const _this=this;
 				
 				//制作小票格式， 
-                var data=[];  //定义一个数组
+				var data=[];  //定义一个数组
 				var line={};  //每添加一个，代表一行字
 				
-				
-				// //加入图片
-				// var Path="http://www.html5-app.com/gprinter.png"; // Logo图片
-				// line.image=Path;
-				// line.width="350";
-				// line.center="center";
-				// line.bottom="1";
-				// data.push(line);
-				// 
 				line={};
 				line.text="七点校园";
 				line.center="center";
@@ -61,14 +53,14 @@
 				data.push(line); //每添加一个，代表一行字
 				
 				line={};  //每添加一个一行字之前,清空一下
-				line.text="七点校园测试单";
+				line.text="七点校园外卖单";
 				line.center="left";
 				line.font="normal";
 				line.bottom="1";
 				data.push(line);
 				
 				line={};
-				line.text="收银员:00056";
+				line.text="店铺名称:00056";
 				line.center="left";
 				line.font="bold";
 				line.bottom="1";
@@ -82,7 +74,7 @@
 				data.push(line);
 				
 				line={};  
-				line.text="业务日期：2019-05-30 18:15:25";
+				line.text="订单日期：2019-05-30 18:15:25";
 				line.center="left";
 				line.font="normal";
 				line.bottom="1";
@@ -96,18 +88,18 @@
 				data.push(line);
 				
 				//商品列表，示例
-				for(let i=0;i<1;i++)
+				for(let i=0;i<2;i++)
 				{
-               
+			   
 				line={};
-				line.text="商品名称：秘制红烧鸭";
+				line.text="商品名称：青椒肉丝盖浇饭";
 				line.center="left";
 				line.font="normal";
 				line.bottom="1";
 				data.push(line);
 				
 				line={};
-				line.title=["数量：1","单价：25","金额：25"];
+				line.title=["数量：1","单价：305","金额：305"];
 				line.left=[0,30,60];
 				line.center="left";
 				line.font="normal";
@@ -125,10 +117,17 @@
 				data.push(line);
 				
 				line={};
-				line.text="数量：1 ,金额：￥20.00";
+				line.text="数量：4 ,金额：￥1220.00";
 				line.center="left";
 				line.font="bold";
 				line.bottom="1";
+				data.push(line);
+				
+				line={};
+				line.text="实收金额：￥1220.00";
+				line.center="left";
+				line.font="bold";
+				line.bottom="2";
 				data.push(line);
 				
 				line={};
@@ -162,7 +161,8 @@
 				line.font="normal";
 				line.bottom="2";
 				data.push(line);
-				 	//加入条型码
+
+				//加入条型码
 				line={};
 				line.barcode="2019563352660";
 				line.type="CODE128";
@@ -172,16 +172,23 @@
 				line.center="center";
 				line.bottom="2";
 				data.push(line);
+				
+				
 				//打印小票
 				gp.Print({"printdata":data},result=>{
 					_this.title=JSON.stringify(result);
+					_this.$api.msg(result.msg)
 				});
-			},State(){
+				
+				
+			},
+			State(){
 				//查询找印机状态
 				const _this=this;
 				gp.PrinterState(result=>{
-					
 					_this.title=JSON.stringify(result);
+					_this.$api.msg(result.msg)	
+					
 				});
 				
 			},
@@ -190,6 +197,7 @@
 				//断开打印机
 				gp.Disconnect(result=>{	
 					_this.title=JSON.stringify(result);
+					_this.$api.msg(result.msg)
 				});
 				
 			}

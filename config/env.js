@@ -10,7 +10,7 @@
 // let baseUrl = 'http://47.104.130.229:8360/';
 let appName = 'jxy';
 let supplierId = 103;
-let debug = 1;
+let debug = 0;
 let baseUrl = 'http://serv.moyaomiao.cn/';
 let baseUrl2 = 'http://serv.moyaomiao.cn/';
 let baseUrl3 = 'http://serv.moyaomiao.cn/';

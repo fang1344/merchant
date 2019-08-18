@@ -6,7 +6,6 @@
 					<span v-if="item.required == 1" class="required-category">必选</span>
 					<img :src="item.icon" v-if="item.icon.length > 0" />
 					<span>{{ item.name }}</span>
-					<text class="count" v-if="item.count > 0">{{ item.count }}</text>
 				</div>
 			</scroll-view>
 			<scroll-view class="list-r" :scroll-y="true">
@@ -236,8 +235,6 @@ export default {
 	.list-c {
 		width: 100%;
 		display: flex;
-		position: fixed;
-		top: 90upx;
 		bottom: 90upx;
 		.list-l {
 			display: flex;

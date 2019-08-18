@@ -1,10 +1,10 @@
 <template>
 	<view class="container">
 		<view class="tj-sction">
-			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=2">
+			<!-- <navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=2">
 				<text class="num">{{info.coin}}</text>
 				<text>吃点币</text>
-			</navigator>
+			</navigator> -->
 			<navigator class="tj-item" url="/subPackages/waimai/pages/me/withdrawInfo?type=3">
 				<text class="num">{{info.food_stamp}}</text>
 				<text>粮票</text>

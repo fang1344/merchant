@@ -91,12 +91,6 @@ export default {
 	},
 	methods: {
 		...mapActions('user', ['setUserInfoAction', 'bindGetUserInfoAction']),
-
-		itemClick(e) {
-			console.log(this.userInfo);
-			wx.navigateTo({ url: e.path });
-		},
-		
 		logoutClick() {
 			wx.showModal({
 				title: '确认退出？',

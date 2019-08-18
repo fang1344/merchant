@@ -23,10 +23,8 @@ export default {
 
 	async mounted() {
 		let res = await getRestaurantCategoryList();
-
 		this.changeList = res.data;
 		this.list = res.data;
-		console.log(this.changeList);
 	},
 
 	components: {
@@ -39,7 +37,6 @@ export default {
 
 	methods: {
 		onDragSortChange(e) {
-			console.log(e);
 			// frontData 插到谁后面
 			// data 操作的数据
 			if (e.frontData == undefined) {

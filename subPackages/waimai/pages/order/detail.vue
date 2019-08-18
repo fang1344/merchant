@@ -21,15 +21,15 @@
       </view>
       
     </view>
-    <view class="item-list">
+    <view class="item-list" v-for="(store,storeIndex) in orderData.store" :key="storeIndex">
       <view class="section">
-        <img :src="orderData.store_image_url" >
-        <span>{{orderData.store_name}}</span>
+        <img :src="store.image_url" >
+        <span>{{store.name}}</span>
         <!-- <text class="tag">商家自配</text> -->
       </view>
       <view class="list">
-        <view class="item" v-for="(item, index) in orderData.goods" :key="index">
-          <img :src="item.images[0]">
+        <view class="item" v-for="(item, index) in store.goodsList" :key="index">
+          <img :src="item.images_url[0]">
           <view class="item-r">
             <view class="r-t">
               <span>{{item.name}}</span>
@@ -135,7 +135,7 @@
       </view>
 			
     </view>
-		<view class="pay-btn" @click="disposeOrder">
+		<view class="pay-btn" @click="disposeOrder" v-if="disposeText">
 		  <view class="top">
 		    <span class="s-l">{{disposeText}}</span>
 		    <!-- <span class="s-m">￥{{orderData.pay_money}}</span>
@@ -151,7 +151,7 @@ import {appName} from "@/config/env.js";
 import {getUserOrderData} from '@/src/utils/api.js'
 import util from '@/src/utils/util'
 import {openLocation} from '@/src/utils/wxapi'
-import {getUserOrderDetail,restaurantOrderPicking} from '@/src/utils/api'
+import {getUserOrderDetail,riderOrderReceiving,riderOrderDelivery} from '@/src/utils/api'
 import {mapState, mapMutations, mapActions, mapGetters} from "vuex"
 
 export default {
@@ -183,14 +183,17 @@ export default {
 			}
 		},
 		remarkText(){
-			let remarkT = JSON.parse(this.orderData.remark);
-			var remark = remarkT.remark;
-			if (remarkT.tags.length>0) {
-				this.orderData.remark.tags.map(res=>{
-					remark += res.value;
-				})
-			} 
-			return remark;
+			var remark = '';
+			if (this.orderData.remark) {
+				let remarkArr = JSON.parse(this.orderData.remark);
+				remark += remarkArr.remark;
+				if (remarkArr.tags.length>0) {
+					this.orderData.remark.tags.map(res=>{
+						remark += res.value;
+					})
+				} 
+				return remark;
+			}	
 		},
   },
   components: {
@@ -219,19 +222,15 @@ export default {
 		},
 		async disposeOrder(){
 			if(this.orderData.order_state==1){
-				let res = await restaurantOrderPicking({order_code:this.orderData.order_code});
-			}else if(this.orderData.order_state==2){
-				let res = await restaurantOrderDistribution({order_code:this.orderData.order_code});		
+				let res = await riderOrderReceiving({order_code:this.orderData.order_code});
+			}else if(this.orderData.order_state==3){
+				let res = await riderOrderDelivery({order_code:this.orderData.order_code});		
 			}
+			this.$api.msg(res.message);
 			if(res.errno==0){
-				uni.navigateTo({
-					url:'/subPackages/waimai/pages/order/index'
-				})
-			}else{
-				this.$api.msg(res.message);
-				uni.navigateTo({
-					url:'/subPackages/waimai/pages/order/index'
-				})
+				setTimeout(uni.navigateTo({
+					url:'/pages/order/index'
+				}),800)
 			}
 		}
   },

@@ -1,4 +1,5 @@
 <script>
+	import { getRestaurantStoreDetail } from '@/src/utils/api.js';
 export default {
 	onLaunch: function() {
 		// console.log(e);
@@ -63,7 +64,6 @@ function play() {
 }
 </script>
 <style lang="less">
-// @import './common/css/iconfont.less';
 @import './common/css/iconfont/iconfont.css';
 </style>
 <style>

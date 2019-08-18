@@ -105,6 +105,8 @@ export const getRestaurantCategoryList = (params) => request('restaurant/categor
 
 export const saveRestaurantCategory = (params) => request('restaurant/category/save', params, 'post', 'lumen');
 
+export const deleteRestaurantCategory = (params) => request('restaurant/category/delete', params, 'get', 'lumen')
+
 export const getRestaurantCategoryDetail = (params) => request('restaurant/category/detail', params, 'get', 'lumen');
 
 export const sortRestaurantCategory = (params) => request('restaurant/category/sort', params, 'post', 'lumen');
@@ -147,6 +149,7 @@ export const saveStoreCoupon = (params) => request('store/coupon/save',params,'p
 export const getRestaurantCooperationPattern = (params) => request('restaurant/cooperation/pattern', params, 'get', 'lumen');
 
 export const saveStoreGoodsActivity = (params) => request('restaurant/storeGoodsActivity/save', params, 'post', 'lumen')
+
 /**
  * 获取购物车
  */
@@ -246,6 +249,9 @@ export const saveBrand = (params) => request('restaurant/brand/save',params,'pos
  */
 export const saveStoreProductOrder = (params) => request('restaurant/storeProductOrder/save',params,'post','lumen')
 
+export const storeCooperationSave = (params) => request('restaurant/cooperation/save',params,'post','lumen')
+
+export const getStoreProduct = (params) => request('restaurant/store/product',params,'get','lumen')
 /**
  * 获取商品列表
  */
@@ -748,4 +754,4 @@ export const resetPassword =(params)=> request('user/resetPassword',params, 'POS
 
 
 // 评价
-export const getRatingDetail =(params)=> request('/restaurant/orderComment/list',params, 'get')
+export const getRatingDetail =(params)=> request('restaurant/orderComment/list',params, 'get')

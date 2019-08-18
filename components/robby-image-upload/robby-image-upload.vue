@@ -57,7 +57,6 @@
 				if(this.enableAdd === false){
 					return false
 				}
-				console.log('length',this.value.length);
 				if(this.limit && this.value.length >= this.limit){
 					return false
 				}
@@ -124,9 +123,7 @@
 										success: function(res){
 											if(res.statusCode === 200){
 												let data = JSON.parse(res.data);
-												
 												_self.value[remoteUrlIndex] = data.data.local_url 
-												console.log('self.value',_self.value);
 												completeImages ++
 												
 												if(_self.showUploadProgress){
@@ -137,15 +134,12 @@
 														duration: 1000
 													});
 												}
-												console.log('success to upload image: ' + res.data)
 												resolve(data)
 											}else{
-												console.log('fail to upload image:'+res.data)
 												reject('failt to upload image:' + remoteUrlIndex)
 											}
 										},
 										fail: function(res){
-											console.log('fail to upload image:'+res)
 											reject('failt to upload image:' + remoteUrlIndex)
 										}
 									})

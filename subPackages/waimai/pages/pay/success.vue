@@ -25,7 +25,10 @@
 			};
 		},
 		onLoad(e) {
-			this.amount = parseFloat(e.amount).toFixed(2);
+			if(e.amount){
+				console.log(e.amount);
+				this.amount = parseFloat(e.amount).toFixed(2);	
+			}
 		},
 		methods: {
 			toStore() {

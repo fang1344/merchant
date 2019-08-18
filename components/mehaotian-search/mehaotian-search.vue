@@ -74,7 +74,6 @@ export default {
 		},
 		search() {
 			if (!this.inputVal) return;
-			console.log(this.inputVal);
 			this.$emit('search', this.inputVal);
 		}
 	},
